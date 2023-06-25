@@ -22,7 +22,7 @@ run npm install -g pnpm
 
 COPY --from=base /app/shared /app/shared
 
-copy --from=base /app/backend/cron /app/backend/cron
+copy --from=base /app/backend/jobs /app/backend/jobs
 
 copy --from=base /app/package* /app/pnpm* /app/
 
@@ -49,7 +49,7 @@ env PORT 4000
 
 expose 4000
 
-cmd ["npx", "ts-node", "/app/backend/cron/src/index.ts"]
+cmd ["npx", "ts-node", "/app/backend/jobs/src/index.ts"]
 
 
 

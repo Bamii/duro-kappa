@@ -6,9 +6,9 @@
   "scripts": {
     "clean": "rm -rf ../sdk ../docs",
     "_build": "pnpm clean && pnpm gen:sdk && pnpm gen:docs",
-    "start:dev": "prism mock petstore.yaml",
-    "gen:sdk": "openapi-generator-cli generate -i petstore.yaml -g typescript -o ../sdk",
-    "gen:docs": "redocly build-docs petstore.yaml --theme.openapi.disableSearch -o ../docs/index.html"
+    "start:dev": "prism mock duro.yaml",
+    "gen:sdk": "openapi-generator-cli generate -i duro.yaml -g typescript -o ../sdk",
+    "gen:docs": "redocly build-docs duro.yaml --theme.openapi.disableSearch -o ../docs/index.html"
   },
   "keywords": [],
   "author": "",

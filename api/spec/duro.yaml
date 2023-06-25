@@ -1,0 +1,446 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Duro
+  license:
+    name: MIT
+  description: |-
+    Duro.
+    a virtual queueing service for customer convenience.    
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/HARYORBEE_1/duro_thing/1.0.0
+  - url: http://petstore.swagger.io/v1
+paths:
+  /admin/onboard:
+    post:
+      summary: onboard the merchants by adding a business name, and branch, and admin.
+      operationId: onboardMerchant
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                location:
+                  type: string
+                coordinates:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful registration of business
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+        '400':
+          description: Successful registration of business
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+  /queue/join/{branchId}:
+    post:
+      summary: Join a queue for a merchant branch.
+      operationId: joinQueue
+      tags:
+        - Queue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      parameters:
+        - name: branchId
+          in: path
+          required: true
+          description: Request body
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully received request. The user will only join a queue if they are not on another queue.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                  
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /queue/leave:
+    post:
+      summary: Leave the queue you are currently on. Will do nothing if user is not on any queue or user is currently being attended to.
+      operationId: leaveQueue
+      tags:
+        - Queue
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully received request. The user will only leave a queue if they are on a queue and they're not currently being attended to.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                  
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /queue/details:
+    post:
+      summary: Get the details of the queue the user is on.
+      operationId: queueDetails
+      tags:
+        - Queue
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully received request. The user will only leave a queue if they are on a queue and they're not currently being attended to.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                  
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /queue/preview/{queueId}:
+    post:
+      summary: Preview a queue
+      operationId: queuePreview
+      tags:
+        - Queue
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: queueId
+          in: path
+          required: true
+          description: Request body
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully received request. The user will only leave a queue if they are on a queue and they're not currently being attended to.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                  
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /admin/login:
+    post:
+      summary: Admin login
+      operationId: adminLogin
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successfully logged in the admin.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+  /admin/currently-attending-to:
+    get:
+      summary: List of users the admin is currently attending to.
+      operationId: currentlyAttendingTo
+      tags:
+        - Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of users the admin is currently attending to.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+  /admin/queue/list:
+    get:
+      summary: Get all the queues for the branch the admin is part of.
+      operationId: adminGetQueue
+      tags:
+        - Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all the users currently on the queue.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+  /admin/queue/create:
+    post:
+      summary: create a new queue for the branch the admin is a part of.
+      operationId: adminCreateQueue
+      tags:
+        - Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all the users currently on the queue.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+  /admin/queue/delete:
+    delete:
+      summary: Delete a queue from the branch's list. (Note that you must have at lease one queue at a time)
+      operationId: adminDeleteQueue
+      tags:
+        - Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all the users currently on the queue.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+  /admin/branch/create:
+    post:
+      summary: Create a new branch for merchant.
+      operationId: adminCreateBranch
+      tags:
+        - Super Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful creation of a branch for a merchant.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+  /admin/queue/advance:
+    post:
+      summary: answer the next person(s) on the queue.
+      operationId: adminAdvanceQueue
+      tags:
+        - Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all the users currently on the queue.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+  /admin/queue/user/dismiss:
+    post:
+      summary: Dismiss a user after being done answering them.
+      operationId: admiDismissUser
+      tags:
+        - Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all the users currently on the queue.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+  /admin/branch/list:
+    get:
+      summary: Get all the branches for a merchant.
+      operationId: adminListBranch
+      tags:
+        - Super Admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful creation of a branch for a merchant.
+          content:
+            application/json:    
+              schema:
+                type: object
+                required: 
+                  - status
+                  - message
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                
+        '500':
+          description: Error occured on the server.
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Response"
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
+  schemas:
+    Response:
+      type: object
+      required: 
+        - status
+        - message
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    User:
+      type: object
+      properties:
+        name: 
+          type: string
+          
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
