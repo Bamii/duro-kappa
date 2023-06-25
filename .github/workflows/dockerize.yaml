@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: backend.Dockerfile
+          file: "{context}/backend.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-doorman:latest
 
@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: frontend.Dockerfile
+          file: "{context}/frontend.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-butler:latest
 
@@ -38,6 +38,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: cron.Dockerfile
+          file: "{context}/cron.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-tray:latest
