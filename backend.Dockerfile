@@ -12,7 +12,7 @@ copy ./backend/queue /app/backend/queue
 
 copy ./backend/doorman /app/backend/doorman
 
-copy ./package* /app/pnpm* /app/setup.sh /app/
+copy ./package* ./pnpm* ./setup.sh /app/
 
 workdir /app
 
