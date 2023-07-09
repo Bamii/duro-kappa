@@ -1,4 +1,4 @@
-name: duro by team kapppa
+name: build n test
 run-name: ${{ github.actor }} 
 on: [push]
 jobs:
