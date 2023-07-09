@@ -8,7 +8,7 @@ COPY ./shared /app/shared
 
 copy ./backend/jobs /app/backend/jobs
 
-copy ./package* /app/pnpm* /app/
+copy ./package* ./pnpm* /app/
 
 workdir /app
 
