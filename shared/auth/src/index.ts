@@ -4,32 +4,35 @@ import databaseClient from "database";
 import { User, Admin } from "database/src/models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import config from "config";
+import config, { ApplicationError } from "config";
 
 const database = databaseClient();
 const SALT_ROUNDS = config.salt_rounds;
-const TOKEN_SECRET_KEY = config.token_secret || "secret";
+const TOKEN_SECRET_KEY = config.token_secret;
 
 export const clientAuth = () => {
   return async (req: any & User, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
     try {
-      if (!authorization) throw new Error("close sesame");
+      if (!authorization) throw new ApplicationError("close sesame");
 
       const [protocol, token] = authorization.split(" ");
-      if (protocol !== "Bearer" || !token) throw new Error("gerrarahia! you sly being.");
+      if (protocol !== "Bearer" || !token) throw new ApplicationError("gerrarahia! you sly being.");
 
       const result = jwt.verify(token, TOKEN_SECRET_KEY)
       const { email } = result as { email: string };
       const user = await database.getUserByEmailOrPhone({ email });
 
       if (!user)
-        throw new Error("huhuhu... ");
+        throw new ApplicationError("huhuhu... ");
 
       req.user = user;
       return next();
     } catch (error: any) {
-      return sendError(res, error.message, { status: 401 })
+      if(error instanceof ApplicationError) 
+        return sendError(res, error.message, { status: 401 });
+
+      return sendError(res, "An application error occured.", { status: 500 })
     }
   }
 }
@@ -38,24 +41,27 @@ export const adminAuth = (isSuperAdmin: boolean) => {
   return async (req: any & Admin, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
     try {
-      if (!authorization) throw new Error("close sesame");
+      if (!authorization) throw new ApplicationError("close sesame");
 
       const [protocol, token] = authorization.split(" ");
-      if (protocol !== "Bearer" || !token) throw new Error("gerrarahia! you sly being.");
+      if (protocol !== "Bearer" || !token) throw new ApplicationError("gerrarahia! you sly being.");
 
       const result = jwt.verify(token, TOKEN_SECRET_KEY)
       const { email } = result as { email: string };
       const user = await database.getAdminByEmail(email);
 
       if (!user)
-        throw new Error("huhuhu...");
+        throw new ApplicationError("huhuhu...");
       if (isSuperAdmin && !user.superAdmin)
-        throw new Error("closed sesame");
+        throw new ApplicationError("closed sesame");
 
       req.user = user;
       return next();
     } catch (error: any) {
-      return sendError(res, error.message, { status: 401 })
+      if(error instanceof ApplicationError) 
+        return sendError(res, error.message, { status: 401 });
+        
+      return sendError(res, "An application error occured.", { status: 500 })
     }
   }
 }

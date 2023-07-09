@@ -6,9 +6,7 @@ import { Queue } from "database/src/models";
 import qrcode = require("qrcode");
 import { readFileSync, rmSync } from "node:fs";
 import _config from "config";
-
-
-const MERCHANT_QR_URL_BASE = _config.app_url ?? '';
+const MERCHANT_QR_URL_BASE = _config.app_url;
 
 async function run() {
   const queue = await queueClient().connect();

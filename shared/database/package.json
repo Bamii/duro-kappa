@@ -8,7 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "build": "tsc --incremental",
-    "db:sync-models": "prisma migrate dev"
+    "db:sync-models": "prisma migrate dev",
+    "ci:setup": "prisma generate",
+    "db:prod-sync-models": "prisma db push",
+    "start:setup": "pnpm run db:prod-sync-models"
   },
   "author": "",
   "license": "ISC",

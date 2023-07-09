@@ -4,37 +4,23 @@ workdir /app
 
 run npm install -g pnpm
 
-copy . /app
+COPY ./shared /app/shared
 
-workdir /app 
+copy ./backend/admin /app/backend/admin
 
-run npx pnpm i
+copy ./backend/queue /app/backend/queue
+
+copy ./backend/doorman /app/backend/doorman
+
+copy ./package* /app/pnpm* /app/setup.sh /app/
+
+workdir /app
+
+run pnpm i --force ts-node -w
+
+run npx pnpm i --force
 
 run npx pnpm run build
-
-
-
-from node:18-alpine3.17 
-
-workdir /app
-
-run npm install -g pnpm
-
-COPY --from=base /app/shared /app/shared
-
-copy --from=base /app/backend/admin /app/backend/admin
-
-copy --from=base /app/backend/queue /app/backend/queue
-
-copy --from=base /app/backend/doorman /app/backend/doorman
-
-copy --from=base /app/package* /app/pnpm* /app/
-
-workdir /app
-
-run npx pnpm i
-
-run npx pnpm i ts-node -w
 
 workdir /app/shared/database
 
@@ -48,12 +34,14 @@ env QUEUE_CONNECTION_URL $QUEUE_CONNECTION_URL
 
 ENV DATABASE_URL $DATABASE_URL
 
+workdir /app
 
 env PORT 4000
 
 expose 4000
 
-cmd ["npx", "ts-node", "/app/backend/doorman/src/index.ts"]
+cmd ["npx", "pnpm", "start"]
+
 
 
 

@@ -1,34 +1,20 @@
-from node:18-alpine3.17 as base
-
-workdir /app
-
-run npm install -g pnpm
-
-copy . /app
-
-workdir /app 
-
-run npx pnpm i
-
-run npx pnpm run build
-
-
-
 from node:18-alpine3.17 
 
 workdir /app
 
 run npm install -g pnpm
 
-COPY --from=base /app/shared /app/shared
+COPY ./shared /app/shared
 
-copy --from=base /app/backend/jobs /app/backend/jobs
+copy ./backend/jobs /app/backend/jobs
 
-copy --from=base /app/package* /app/pnpm* /app/
+copy ./package* /app/pnpm* /app/
 
 workdir /app
 
 run npx pnpm i
+
+run npx pnpm run build
 
 run npx pnpm i ts-node -w
 

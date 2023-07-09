@@ -16,6 +16,10 @@ workdir /app/provider
 
 run npm run build
 
+env PORT 5000
+
+expose 5000
+
 cmd ["npm", "run", "start"]
 
 

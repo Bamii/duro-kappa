@@ -5,9 +5,10 @@
   "main": "index.js",
   "preinstall": "npx only-allow pnpm",
   "scripts": {
-    "start": "pnpm --stream -r start",
+    "start": "sh setup.sh",
     "start:fe": "pnpm --stream -r start:fe",
     "start:dev": "pnpm --parallel --stream -r run start:dev",
+    "start:prod": "pnpm --stream -r run start:prod",
     "build": "pnpm --stream -r run build",
     "clean": "pnpm -r run clean",
     "test:ci": "pnpm --stream -r run test:ci"
