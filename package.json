@@ -11,7 +11,8 @@
     "start:prod": "pnpm --stream -r run start:prod",
     "build": "pnpm --stream -r run build",
     "clean": "pnpm -r run clean",
-    "test:ci": "pnpm --stream -r run test:ci"
+    "test:ci": "pnpm --stream -r run test:ci",
+    "ci:setup": "pnpm --stream -r run ci:setup"
   },
   "keywords": [],
   "author": "chaluwa@gmail.com",

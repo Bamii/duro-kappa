@@ -25,6 +25,9 @@ jobs:
           NEXT_PUBLIC_API_URL: https://duro-be.onrender.com
         run: pnpm run build
 
+      - name: setup backend
+        run: pnpm run ci:setup
+
       - name: start projects
         env:
           NEXT_PUBLIC_API_URL: https://duro-be.onrender.com
