@@ -25,10 +25,16 @@ The QR code and mobile phone number are displayed visibly and outside the premis
 
 
 ## some details on how it works...
-businesses will have more than one branches, and each branch will have their own queues.
-only one admin email will be attached to each branch, and each email must be unique.
-each queue will have a qr code, and a unique link for the users to join.
-admins will be able to advance queues and dismiss users from queues.
+- businesses will have more than one branches, and each branch will have their own queues.
+- only one admin email will be attached to each branch, and each email must be unique.
+- each queue will have a qr code, and a unique link for the users to join.
+- admins will be able to advance queues and dismiss users from queues.
+
+### services
+- doorman - backend server serving /admin, and /queue
+- butler - the frontend service
+- tray - the jobs service handling the notifications, and periodic crob jobs
 
 
 ## architecture.
+![Untitled-2023-06-26-2309](https://github.com/Bamii/duro-kappa/assets/16966438/b03a81ca-02c7-42a1-ba8a-9923729f5cef)
