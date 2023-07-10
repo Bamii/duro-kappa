@@ -8,7 +8,7 @@ COPY ./shared /app/shared
 
 copy ./backend/jobs /app/backend/jobs
 
-copy ./package* /app/pnpm* /app/
+copy ./package* ./pnpm* /app/
 
 workdir /app
 
@@ -29,7 +29,6 @@ arg QUEUE_CONNECTION_URL
 env QUEUE_CONNECTION_URL $QUEUE_CONNECTION_URL
 
 ENV DATABASE_URL $DATABASE_URL
-
 
 env PORT 4000
 
