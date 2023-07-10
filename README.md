@@ -35,6 +35,13 @@ The QR code and mobile phone number are displayed visibly and outside the premis
 - butler - the frontend service
 - tray - the jobs service handling the notifications, and periodic crob jobs
 
+### stack
+- typescript
+- Next.js
+- supabase (object storage);
+- redis (queue)
+- postgreql (database)
+
 
 ## architecture.
 ![Untitled-2023-06-26-2309](https://github.com/Bamii/duro-kappa/assets/16966438/b03a81ca-02c7-42a1-ba8a-9923729f5cef)
