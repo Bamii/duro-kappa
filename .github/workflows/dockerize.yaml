@@ -19,8 +19,7 @@ jobs:
         name: Build and push doorman
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./backend.Dockerfile
+          file: "backend.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-doorman:latest
 
@@ -28,8 +27,7 @@ jobs:
         name: Build and push butler
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./frontend.Dockerfile
+          file: "frontend.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-butler:latest
 
@@ -37,7 +35,6 @@ jobs:
         name: Build and push tray
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./cron.Dockerfile
+          file: "cron.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-tray:latest
