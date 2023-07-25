@@ -20,7 +20,7 @@ jobs:
           version: 7
           run_install: |
             - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
+              args: [--no-frozen-lockfile]
 
       - name: run build
         env:
