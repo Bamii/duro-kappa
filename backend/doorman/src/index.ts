@@ -9,4 +9,4 @@ router.get('/', (_, res) => { res.send("Welcome to DURO doorman! happy waiting :
 router.use('/admin', admin);
 router.use('/queue', duro);
 
-expressapp(router)
+expressapp(Router().use('/api/v1', router))

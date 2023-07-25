@@ -1,8 +1,16 @@
 services:
-  doorman:
-    image: duro-doorman:latest
+  door:
+    image: bbamii/duro-door:latest
+    restart: always
+    networks:
+      - link
     ports:
-      - 4000:4000
+      - '8080:80'
+
+  doorman:
+    image: bbamii/duro-doorman:latest
+    networks:
+      - link
     env_file:
       - ./.env_docker
     depends_on:
@@ -10,24 +18,35 @@ services:
       - queue
 
   frontend:
-    image: duro-butler:latest
-    ports:
-      - 5000:5000
+    image: bbamii/duro-butler:latest
+    networks:
+      - link
     env_file:
-      - ./apps/provider/.env
-      
+      - ./.env_docker
+
+  jobs:
+    image: bbamii/duro-tray:latest
+    networks:
+      - link
+    env_file:
+      - ./.env_docker
+
   queue:
     image: redis:latest
     restart: always
-    ports:
-      - '6379:6379'
-            
+    networks:
+      - link
+
   db:
     image: postgres:latest
     restart: always
+    networks:
+      - link
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5432:5432'
+
+networks:
+  link:
+    driver: bridge
 

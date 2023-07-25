@@ -32,6 +32,14 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-butler:latest
 
       -
+        name: Build and push door
+        uses: docker/build-push-action@v4
+        with:
+          file: "door.Dockerfile"
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-door:latest
+
+      -
         name: Build and push tray
         uses: docker/build-push-action@v4
         with:
