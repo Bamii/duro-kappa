@@ -7,7 +7,7 @@
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "build": "tsc --incremental",
     "start:prod": "PORT=3000 ts-node src/index.ts",
-    "start:dev": "PORT=5000 nodemon ./src/index.ts"
+    "start:dev": "nodemon ./src/index.ts"
   },
   "keywords": [],
   "author": "",

@@ -8,12 +8,12 @@ type RequestOptions = {
 export const DURO_ADMIN = 'duro_admin'
 export const DURO_USER = 'duro_user'
 export const TOKEN = 'duro_token'
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
 export async function request(url: string, { method, body, withCredentials }: RequestOptions) {
   const storage = new Storage();
   try {
-    url = `${BASE_URL ?? ""}${url}`
+    url = `${BASE_URL}/api/v1${url}`
     const options: RequestInit = { method, headers: { "Content-Type": "application/json" } }
 
     if (method.toLowerCase() != "get")
@@ -30,10 +30,10 @@ export async function request(url: string, { method, body, withCredentials }: Re
     const response = await fetch(url, options);
     const data = await response.json();
 
-    //if (response.status === 401) {
-    //storage.clear();
-    //return null;
-    //}
+    if (response.status === 401) {
+      storage.clear();
+      return null;
+    }
 
     if (data.status !== 'success') throw new Error(data.message);
     return data;

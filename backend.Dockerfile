@@ -40,7 +40,9 @@ env PORT 4000
 
 expose 4000
 
-cmd ["npx", "pnpm", "start"]
+RUN chmod +x /app/setup.sh
+
+cmd ["pnpm", "run", "start:prod"]
 
 
 

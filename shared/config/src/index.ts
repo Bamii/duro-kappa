@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const config = {
+  api_url: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000",
   app_url: process.env.APP_URL ?? "",
   salt_rounds: process.env.SALT_ROUNDS ?? 10,
   token_secret: process.env.JWT_SECRET ?? "secret",

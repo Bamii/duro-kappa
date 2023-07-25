@@ -1,3 +1,3 @@
 #!/bin/sh
 
-pnpm --stream -r start:setup && cd /app && pnpm run start:prod
+pnpm run --stream -r start:setup && cd /app && pnpm run --stream -r start:prod
