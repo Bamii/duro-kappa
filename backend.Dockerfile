@@ -40,8 +40,6 @@ env PORT 4000
 
 expose 4000
 
-RUN chmod +x /app/setup.sh
-
 cmd ["pnpm", "run", "start:prod"]
 
 
