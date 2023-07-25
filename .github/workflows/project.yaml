@@ -18,7 +18,9 @@ jobs:
         id: pnpm-install
         with:
           version: 7
-          run_install: true
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile, --strict-peer-dependencies]
 
       - name: run build
         env:
