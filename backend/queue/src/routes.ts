@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import databaseClient from "database";
 import log from "logger";
-import queueClient, { DURO_QUEUE, NOTIFICATION_QUEUE } from "queue"
+import queueClient, { DURO_QUEUE, NOTIFICATION_QUEUE, QUEUE_DURATION_QUEUE } from "queue"
 import { sendError, sendSuccess } from 'expressapp/src/utils';
 import { NotificationOptions } from 'notifications'
 import { joinQueueValidation } from './middleware';
@@ -22,6 +22,10 @@ router.post('/join/:merchant_queue', joinQueueValidation, async (_req, res) => {
     if (!merchant_queue || !email)
       throw new Error("Invalid input. Please send in an email.")
 
+    const q = await database.getQueueById(Number.parseInt(merchant_queue));
+    if (!q)
+      return sendError(res, "this queue is not existent.")
+
     let user = await database.getUserByEmailOrPhone({ email });
     if (!user) {
       log.info(`User with email: ${email} was not found. Creating a new user.`);
@@ -38,16 +42,24 @@ router.post('/join/:merchant_queue', joinQueueValidation, async (_req, res) => {
           { data: { user, token: signJWT({ email }) } }
         );
 
-      const q = await database.getQueueById(Number.parseInt(merchant_queue));
-      if (!q)
-        return sendError(res, "this queue is not existent.")
-
       let update_object: Update<User> = { in_queue: true, current_queue: Number.parseInt(merchant_queue) };
       if (name) update_object.name = name;
 
       user = await database.updateUserById(user.id, update_object)
       log.info(`updated user with email: ${email} to be in queue for merchant with id: ${merchant_queue}`)
     }
+
+    // TODO::
+    // get the current time and check if its within the bounds of the time for the queue.
+    // take note that the bounds can change per day for each queue.
+    // check the queue_duration_queue to see if the date has been extended.
+    await queue.enqueue(QUEUE_DURATION_QUEUE, {
+      topic: "",
+      value: JSON.stringify({
+        channel: user.email ? 'email' : "sms",
+        destination: user.phone
+      })
+    });
 
     log.info(`enqueueing the user for the merchant with id: ${merchant_queue}`)
     await queue.enqueue(DURO_QUEUE, { topic: merchant_queue, value: `${user.id}` });

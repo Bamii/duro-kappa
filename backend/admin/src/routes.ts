@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import databaseClient from "database";
+//import cacheClient from "cache";
 import queueClient, { NOTIFICATION_QUEUE, DURO_QUEUE, MERCHANT_REGISTRATION_QUEUE } from "queue"
 import { sendError, sendSuccess } from 'expressapp/src/utils';
 import * as validator from './middleware';
@@ -42,7 +43,8 @@ router.post('/onboard', validator.createMerchantValidation, async (_req, res) =>
     const company_queue = await database.insertQueue({
       description: "Default queue for this branch.",
       name: `${company_name} queue`,
-      branchId: branch.id
+      branchId: branch.id,
+      active: false
     })
 
     await queue.enqueue(
@@ -224,7 +226,8 @@ router.post('/branch/create', adminAuth(true), async (req: any & { user: Admin }
     const company_queue = await database.insertQueue({
       description: "Default queue for this branch.",
       name: `${company_name} queue`,
-      branchId: branch.id
+      branchId: branch.id,
+      active: false
     })
 
     const _password = await hashPassword(password);
@@ -265,7 +268,7 @@ router.post('/queue/create', adminAuth(false), async (req: any & { user: Admin }
     if (q)
       return sendError(res, "There's already a queue with this name :(");
 
-    q = await database.insertQueue({ branchId, name, description, duration });
+    q = await database.insertQueue({ active: false, branchId, name, description, duration });
     await queue.enqueue(
       MERCHANT_REGISTRATION_QUEUE,
       { topic: "", value: `${q.id}` }

@@ -22,7 +22,6 @@ async function run() {
 
         let { branch, users, ...new_queue }: Queue = await database.getQueueById(Number.parseInt(id))
         const merchant_url: string = `${MERCHANT_QR_URL_BASE}/${new_queue.id}`;
-        console.log('sd', new_queue)
         const filename = `${branch.id}__${new_queue.id}`;
 
         // generate qr.

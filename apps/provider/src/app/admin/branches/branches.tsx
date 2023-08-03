@@ -16,7 +16,6 @@ export default function Page() {
   const classname = useMemo(() => pn.length > 3 && is_mobile() ? "hidden" : "block", [pn, screen_size, is_mobile()])
 
   useEffect(() => {
-    console.log(branches)
     if (!branches)
       get_branches()
         .catch((e: any) => { toast.error(e.message) });
@@ -25,10 +24,10 @@ export default function Page() {
   return (
     <div className={classname}>
       {branches && user
-        ? (
+        && (
           <div>
             {branches.map((branch: any) => (
-              <div key={branch.id} className='mb-8 p-4 border border border-black shadow-outset '>
+              <div key={branch.id} className='mb-8 p-4 border border border-black shadow-outset'>
                 <div className='' key={branch.id}>
                   <div className='text-xl'>branch location: {branch.location}</div>
                   <span className='text-sm text-gray-400'>branch coordinates: {branch.coordinates}</span>
@@ -38,9 +37,6 @@ export default function Page() {
               </div>
             ))}
           </div>
-
-        ) : (
-          <div> hmmm... you may not be authorized to view this page</div>
         )}
     </div>
   );

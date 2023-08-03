@@ -1,21 +1,17 @@
 import { Queue, QueueType } from '../index'
 import log from "logger";
 import { Redis as RedisClient } from 'ioredis';
-import databaseClient from "database";
-import { Database } from "database/src/models";
 import _config from "config";
 const config = _config.queue;
 
 export default class Redis implements Queue {
   client: RedisClient | null = null;
-  database: Database | null = null;
   consuming: boolean = false;
 
   async connect(): Promise<this> {
     return new Promise((resolve, reject) => {
       try {
         this.client = new RedisClient(config.connection_url);
-        this.database = databaseClient().connect();
         resolve(this)
       } catch (error: any) {
         log.error(error.message);
@@ -39,7 +35,7 @@ export default class Redis implements Queue {
       const queueName = `${queue}:${topic ?? ""}`;
       let response = await this.client?.xread(
         "COUNT", 1,
-        "BLOCK", 5000,
+        "BLOCK", 2000,
         "STREAMS", queueName, 0
       );
       if (!response) return null;

@@ -119,9 +119,10 @@ export type Queue = {
   description: string
   branchId: number
   branch: Branch
-  duration?: string
+  duration?: `${string}_${string}`
   qr_code?: string
   users?: User[]
+  active: boolean
 }
 
 export type CleanAdmin = Omit<Admin, "password">

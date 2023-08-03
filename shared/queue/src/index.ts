@@ -27,9 +27,10 @@ export type ConsumerMessage = AMQPMessage;
 export type Queue = Consumer & _Queue;
 
 export const NOTIFICATION_QUEUE = "NOTIFICATION_QUEUE" as const;
+export const QUEUE_DURATION_QUEUE = "QUEUE_DURATION_QUEUE" as const;
 export const MERCHANT_REGISTRATION_QUEUE = "MERCHANT_REGISTRATION_QUEUE" as const
 export const DURO_QUEUE = "DURO_QUEUE" as const
-export type QueueType = typeof NOTIFICATION_QUEUE | typeof MERCHANT_REGISTRATION_QUEUE | typeof DURO_QUEUE;
+export type QueueType = typeof QUEUE_DURATION_QUEUE | typeof NOTIFICATION_QUEUE | typeof MERCHANT_REGISTRATION_QUEUE | typeof DURO_QUEUE;
 
 // implementations...
 const queues = {
