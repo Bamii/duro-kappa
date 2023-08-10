@@ -22,6 +22,7 @@
     "logger": "workspace:*",
     "notifications": "workspace:*",
     "queue": "workspace:*",
+    "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "zod": "^3.21.4"
   },

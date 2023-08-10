@@ -1,30 +1,23 @@
-import { AMQPMessage } from "@cloudamqp/amqp-client";
+import { Token } from "typedi";
 import RabbitMQ from "./impl/rabbitmq.queue";
 import Redis from "./impl/redis";
+import "reflect-metadata";
 
-export abstract class _Queue {
+export abstract class Queue {
   abstract connect(): Promise<this>
 
-  abstract enqueue<T>(queue: QueueType, value: T & { topic?: string }): Promise<void>
+  abstract enqueue<T>(queue: QueueType | string, value: T & { topic?: string }): Promise<void>
 
-  abstract dequeue<T, U>(queue: QueueType, options: T & { topic?: string }): Promise<U | null>
+ abstract  dequeue<T, U>(queue: QueueType | string, options: T & { topic?: string }): Promise<U | null>
 
-  abstract dequeueItem(queue: QueueType, value: string, options: { topic: string }): Promise<string>
+  abstract dequeueItem(queue: QueueType | string, value: string, options: { topic: string }): Promise<string>
 
-  abstract getQueue(queue: QueueType, options: { topic: string }): Promise<any[]>
+  abstract getQueue(queue: QueueType | string, options: { topic: string }): Promise<any[]>
 
-  abstract getIndexOf(queue: QueueType, value: string, options: { topic: string }): Promise<number>
+ abstract  getIndexOf(queue: QueueType | string, value: string, options: { topic: string }): Promise<number>
 
-  abstract length(queue: QueueType, options: { read?: number, topic?: string }): Promise<number>
+ abstract  length(queue: QueueType | string, options: { read?: number, topic?: string }): Promise<number>
 }
-
-export abstract class Consumer {
-  abstract consume(queue: QueueType, options: { topic?: string }, callback: Function | Awaited<Function>): Promise<void>
-}
-
-export type ConsumerMessage = AMQPMessage;
-
-export type Queue = Consumer & _Queue;
 
 export const NOTIFICATION_QUEUE = "NOTIFICATION_QUEUE" as const;
 export const QUEUE_DURATION_QUEUE = "QUEUE_DURATION_QUEUE" as const;
@@ -34,28 +27,20 @@ export type QueueType = typeof QUEUE_DURATION_QUEUE | typeof NOTIFICATION_QUEUE 
 
 // implementations...
 const queues = {
-  "kafka": RabbitMQ,
-  "redis": Redis
+  "kafka": RabbitMQ as Token<Queue>,
+  "redis": Redis as Token<Queue>
 } as const;
-
 type QueueName = keyof typeof queues;
+
 type FactorySettings = {
   queue: QueueName;
   connection_string?: string;
 }
-
 function queueFactory({ queue = "redis" }: FactorySettings) {
-  return new queues[queue]();
+  return queues[queue];
 }
 
 export default (function() {
-  let instance: Queue;
-  return () => {
-    if (instance) return instance;
-    const { queue } = process.env as FactorySettings;
-    instance = queueFactory({ queue });
-
-    return instance;
-  }
+  return queueFactory({ queue: "redis" });
 })();
 

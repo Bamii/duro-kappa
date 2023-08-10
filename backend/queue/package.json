@@ -17,10 +17,11 @@
     "database": "workspace:*",
     "express": "^4.18.2",
     "expressapp": "workspace:*",
+    "input-validator": "workspace:*",
     "logger": "workspace:*",
     "notifications": "workspace:*",
-    "input-validator": "workspace:*",
     "queue": "workspace:*",
+    "typedi": "^0.10.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {

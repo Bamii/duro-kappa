@@ -1,18 +1,17 @@
 import { Router } from 'express';
-import databaseClient from "database";
+import Database from "database";
 import log from "logger";
-import queueClient, { DURO_QUEUE, NOTIFICATION_QUEUE, QUEUE_DURATION_QUEUE } from "queue"
+import Queue, { DURO_QUEUE, NOTIFICATION_QUEUE, QUEUE_DURATION_QUEUE } from "queue"
 import { sendError, sendSuccess } from 'expressapp/src/utils';
 import { NotificationOptions } from 'notifications'
 import { joinQueueValidation } from './middleware';
 import { signJWT, clientAuth } from "auth"
 import { Update, User } from 'database/src/models';
+import { Container } from "typedi";
 
+const database = Container.get(Database);
+const queue = Container.get(Queue);
 const router = Router();
-const database = databaseClient();
-const queue = queueClient();
-database.connect();
-queue.connect();
 
 // join queue.
 router.post('/join/:merchant_queue', joinQueueValidation, async (_req, res) => {

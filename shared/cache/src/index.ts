@@ -1,6 +1,8 @@
 import Redis from "./impl/redis";
+import 'reflect-metadata';
 
 export abstract class Cache {
+  abstract connect(): Promise<this>
   abstract insert(topic: string): void
   abstract invalidateKeys(topic: string, keys: string[]): void
   abstract invalidateAllKeys(topic: string): void
@@ -21,17 +23,10 @@ type FactorySettings = {
 }
 
 function cacheFactory({ cache = "redis" }: FactorySettings) {
-  return new caches[cache]();
+  return caches[cache];
 }
 
 export default (function() {
-  let instance: Cache;
-  return () => {
-    if (instance) return instance;
-    const { cache } = process.env as FactorySettings;
-    instance = cacheFactory({ cache });
-
-    return instance;
-  }
+  return cacheFactory({ cache: "redis" });
 })();
 

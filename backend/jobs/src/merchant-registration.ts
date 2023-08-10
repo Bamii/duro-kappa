@@ -1,20 +1,23 @@
-import queueClient, { MERCHANT_REGISTRATION_QUEUE, NOTIFICATION_QUEUE } from "queue"
-import log from "logger";
-import storageClient from "storage";
-import databaseClient from 'database';
+import QueueInstance, { MERCHANT_REGISTRATION_QUEUE, NOTIFICATION_QUEUE } from "queue"
+import StorageInstance from "storage";
+import PubSubService from "pub-sub";
+import DatabaseInstance from 'database';
 import { Queue } from "database/src/models";
 import qrcode = require("qrcode");
 import { readFileSync, rmSync } from "node:fs";
+import { Container } from "typedi";
+import log from "logger";
 import _config from "config";
 const MERCHANT_QR_URL_BASE = _config.app_url;
 
-async function run() {
-  const queue = await queueClient().connect();
-  const database = databaseClient().connect();
-  const storage = storageClient().connect();
+const database = Container.get(DatabaseInstance);
+const queue = Container.get(QueueInstance);
+const storage = Container.get(StorageInstance);
+const pubsub = Container.get(PubSubService);
 
+async function run() {
   try {
-    await queue.consume(MERCHANT_REGISTRATION_QUEUE, {}, async (value: string) => {
+    await pubsub.consume(MERCHANT_REGISTRATION_QUEUE, async (value: string) => {
       try {
         const id = value;
         if (!id)

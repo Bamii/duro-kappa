@@ -1,7 +1,9 @@
 import { Queue, QueueType } from '../index'
 import { AMQPChannel, AMQPClient } from '@cloudamqp/amqp-client'
+import { Service } from "typedi";
 import log from "logger";
 
+@Service()
 export default class RabbitMq implements Queue {
   client: any;
 
@@ -56,15 +58,6 @@ export default class RabbitMq implements Queue {
 
   async dequeueItem(queue: QueueType, position: string, options: { topic: string }): Promise<string> {
     return `${queue}.${position}.${options.topic}`;
-  }
-
-  async consume(queue: QueueType, options: { topic: string }, callback: Function | Awaited<Function>): Promise<void> {
-    const channel = await this.client.channel();
-    const q = await channel.queue(`${queue}:${options.topic}`);
-    await q.subscribe({ noAck: true }, async (msg: any) => {
-      await callback(msg);
-      // await consumer.close();
-    })
   }
 
   async getQueue(queue: QueueType, options: { topic: string }): Promise<any[]> {

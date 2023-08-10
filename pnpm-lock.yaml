@@ -110,6 +110,9 @@ importers:
       queue:
         specifier: workspace:*
         version: link:../../shared/queue
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
       typedi:
         specifier: ^0.10.0
         version: 0.10.0
@@ -190,6 +193,9 @@ importers:
       notifications:
         specifier: workspace:*
         version: link:../../shared/notifications
+      pub-sub:
+        specifier: workspace:*
+        version: link:../../shared/pub-sub
       qrcode:
         specifier: ^1.5.3
         version: 1.5.3
@@ -199,52 +205,9 @@ importers:
       storage:
         specifier: workspace:*
         version: link:../../shared/storage
-      zod:
-        specifier: ^3.21.4
-        version: 3.21.4
-    devDependencies:
-      '@types/express':
-        specifier: ^4.17.17
-        version: 4.17.17
-      '@types/node':
-        specifier: ^18.16.3
-        version: 18.16.3
-      nodemon:
-        specifier: ^2.0.22
-        version: 2.0.22
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@18.16.3)(typescript@5.0.4)
-      typescript:
-        specifier: ^5.0.4
-        version: 5.0.4
-
-  backend/onboard:
-    dependencies:
-      auth:
-        specifier: workspace:*
-        version: link:../../shared/auth
-      database:
-        specifier: workspace:*
-        version: link:../../shared/database
-      express:
-        specifier: ^4.18.2
-        version: 4.18.2
-      expressapp:
-        specifier: workspace:*
-        version: link:../../shared/expressapp
-      input-validator:
-        specifier: workspace:*
-        version: link:../../shared/input-validator
-      logger:
-        specifier: workspace:*
-        version: link:../../shared/logger
-      notifications:
-        specifier: workspace:*
-        version: link:../../shared/notifications
-      queue:
-        specifier: workspace:*
-        version: link:../../shared/queue
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -291,6 +254,9 @@ importers:
       queue:
         specifier: workspace:*
         version: link:../../shared/queue
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -340,6 +306,9 @@ importers:
       jsonwebtoken:
         specifier: 8.5.1
         version: 8.5.1
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
       typescript:
         specifier: ^5.1.3
         version: 5.1.3
@@ -361,6 +330,9 @@ importers:
       logger:
         specifier: workspace:*
         version: link:../logger
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
       typedi:
         specifier: ^0.10.0
         version: 0.10.0
@@ -399,6 +371,12 @@ importers:
       prisma:
         specifier: ^4.15.0
         version: 4.15.0
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
     devDependencies:
       typescript:
         specifier: ^5.0.4
@@ -520,6 +498,31 @@ importers:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.16.3)(typescript@5.0.4)
 
+  shared/pub-sub:
+    dependencies:
+      config:
+        specifier: workspace:*
+        version: link:../config
+      ioredis:
+        specifier: ^5.3.2
+        version: 5.3.2
+      logger:
+        specifier: workspace:*
+        version: link:../logger
+      queue:
+        specifier: workspace:*
+        version: link:../queue
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
+    devDependencies:
+      typescript:
+        specifier: ^5.0.4
+        version: 5.1.3
+
   shared/queue:
     dependencies:
       '@cloudamqp/amqp-client':
@@ -537,6 +540,12 @@ importers:
       logger:
         specifier: workspace:*
         version: link:../logger
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
     devDependencies:
       typescript:
         specifier: ^5.0.4
@@ -553,6 +562,12 @@ importers:
       logger:
         specifier: workspace:*
         version: link:../logger
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -6302,7 +6317,6 @@ packages:
 
   /reflect-metadata@0.1.13:
     resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
-    dev: true
 
   /reftools@1.1.9:
     resolution: {integrity: sha512-OVede/NQE13xBQ+ob5CKd5KyeJYU2YInb1bmV4nRoOfquZPkAkxuOXicSe1PvqIuZZ4kD13sPKBbR7UFDmli6w==}

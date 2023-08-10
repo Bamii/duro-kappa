@@ -1,18 +1,18 @@
 import { Router, Response } from 'express';
-import databaseClient from "database";
-//import cacheClient from "cache";
-import queueClient, { NOTIFICATION_QUEUE, DURO_QUEUE, MERCHANT_REGISTRATION_QUEUE } from "queue"
-import { sendError, sendSuccess } from 'expressapp/src/utils';
-import * as validator from './middleware';
-import { Merchant, Branch, Admin, Queue, Input } from 'database/src/models';
 import log from "logger";
+import { Container } from 'typedi';
+// import CacheInstance from "cache"
+import DatabaseInstance from "database";
+import QueueInstance, { NOTIFICATION_QUEUE, DURO_QUEUE, MERCHANT_REGISTRATION_QUEUE } from "queue"
+import { sendError, sendSuccess } from 'expressapp/src/utils';
+import { Merchant, Branch, Admin, Queue, Input } from 'database/src/models';
 import { extract, adminAuth, comparePassword, hashPassword, signJWT } from "auth"
-
+import * as validator from './middleware';
 const router = Router();
-const database = databaseClient();
-const queue = queueClient();
-database.connect();
-queue.connect();
+
+// const cache = Container.get(CacheInstance);
+const database = Container.get(DatabaseInstance);
+const queue = Container.get(QueueInstance);
 
 // onboard...
 router.post('/onboard', validator.createMerchantValidation, async (_req, res) => {
@@ -116,7 +116,7 @@ router.post('/queue/user/dismiss', validator.dismissUserValidation, adminAuth(fa
     await database.updateUserById(
       userToDismiss.id,
       { in_queue: false, attending_to: false, current_queue: null },
-      { current_queue: userToDismiss.current_queue, in_queue: true }
+      //{ current_queue: userToDismiss.current_queue, in_queue: true }
     );
 
     return sendSuccess(res, "successfully dismissed the user from the queue.")
@@ -152,7 +152,7 @@ router.post('/queue/advance', validator.advanceQueueValidation, adminAuth(false)
         await database.updateUserById(
           previousAttendedTo,
           { in_queue: false, attending_to: false, current_queue: null },
-          { current_queue: queueId, in_queue: true }
+          //{ current_queue: queueId, in_queue: true }
         );
       }
     }

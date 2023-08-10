@@ -1,6 +1,7 @@
 import { Prisma } from './impl/prisma'
-import { Database } from './models';
+//import { Database } from './models';
 import * as dotenv from 'dotenv';
+import 'reflect-metadata';
 dotenv.config();
 
 
@@ -16,16 +17,9 @@ type FactorySettings = {
 }
 
 function DatabaseFactory({ database = "prisma" }: FactorySettings) {
-  return new databases[database]();
+  return databases[database];
 }
 
 export default (function() {
-  let instance: Database;
-
-  return (): Database => {
-    if (instance) return instance;
-    const { database } = process.env as FactorySettings;
-    instance = DatabaseFactory({ database });
-    return instance;
-  }
+  return DatabaseFactory({ database: "prisma" });
 })();

@@ -1,14 +1,13 @@
 import { Router } from 'express';
-import databaseClient from "database";
+import Database from "database";
 import { Merchant } from 'database/src/models';
-import queueClient, { MERCHANT_REGISTRATION_QUEUE } from "queue"
+import Queue, { MERCHANT_REGISTRATION_QUEUE } from "queue"
 import { sendError, sendSuccess } from "expressapp/src/utils"
+import { Container } from "typedi";
 
+const database = Container.get(Database);
+const queue = Container.get(Queue);
 const router = Router();
-const database = databaseClient();
-const queue = queueClient();
-database.connect();
-queue.connect();
 
 router.post(
   '/customer-sms-message',
