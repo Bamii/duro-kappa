@@ -19,8 +19,8 @@ async function run() {
     const notifications = notificationService();
 
     const channels = {
-      email: notifications.getInstanceOfNotificationType("email").connect(),
-      sms: notifications.getInstanceOfNotificationType("sms").connect()
+      email: await notifications.getInstanceOfNotificationType("email").connect(),
+      sms: await notifications.getInstanceOfNotificationType("sms").connect()
     }
 
     await pubsub.consume(NOTIFICATION_QUEUE, async (value: string) => {
