@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "cache",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -7,11 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
-    "build": "tsc --incremental",
-    "db:sync-models": "prisma migrate dev",
-    "ci:setup": "prisma generate",
-    "db:prod-sync-models": "prisma db push",
-    "start:setup": "pnpm run db:prod-sync-models"
+    "build": "tsc --incremental"
   },
   "author": "",
   "license": "ISC",
@@ -19,11 +15,11 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@prisma/client": "^4.15.0",
+    "@cloudamqp/amqp-client": "^2.1.1",
     "config": "workspace:*",
-    "dotenv": "^16.0.3",
+    "database": "workspace:*",
+    "ioredis": "^5.3.2",
     "logger": "workspace:*",
-    "prisma": "^4.15.0",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0"
   }

@@ -25,7 +25,7 @@ export default function Page() {
     <div
       className={`${classname}`}>
       {meta && user
-        ? (
+        && (
           <div className='mt-2'>
             {meta?.map((queue: any) => (
               <div key={queue.id} className='mb-8 p-4 border border border-black shadow-outset '>
@@ -45,10 +45,7 @@ export default function Page() {
               </div>
             ))}
           </div>
-        ) : (
-          <div>
-            you may not be authorized to see this page.
-          </div>)}
+        )}
     </div>
   );
 }

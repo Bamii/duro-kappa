@@ -1,12 +1,19 @@
 import { Branch, Database, User, Admin, Input, Merchant, Update, Queue } from "../models";
 import { PrismaClient } from "@prisma/client"
 import log from "logger";
+import { Service } from "typedi";
 
+@Service()
 export class Prisma extends Database {
+  constructor() {
+    super();
+    this.connect();
+  }
+
   connect(): Database {
     try {
       this.client = new PrismaClient()
-      log.info('connected');
+      log.info('connected to database.');
       return this;
     } catch (error: any) {
       throw new Error(error.message);

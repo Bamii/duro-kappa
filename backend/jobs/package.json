@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/qrcode": "^1.5.0",
     "axios": "^1.4.0",
+    "config": "workspace:*",
     "database": "workspace:*",
     "express": "^4.18.2",
     "expressapp": "workspace:*",
@@ -22,8 +23,9 @@
     "notifications": "workspace:*",
     "qrcode": "^1.5.3",
     "queue": "workspace:*",
-    "config": "workspace:*",
+    "pub-sub": "workspace:*",
     "storage": "workspace:*",
+    "typedi": "^0.10.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {

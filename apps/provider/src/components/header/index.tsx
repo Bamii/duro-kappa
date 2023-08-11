@@ -16,8 +16,7 @@ function Header({ title = "DURO" }: PropsType) {
 
   const _logout = async () => {
     logout();
-    router.refresh();
-    //router.push('/')
+    router.push('/');
   }
 
   return (
@@ -38,7 +37,7 @@ function Header({ title = "DURO" }: PropsType) {
           )
           : null}
         {user
-          ? <div onClick={_logout}> logout </div>
+          ? <div className='cursor-pointer' onClick={_logout}> logout </div>
           : (
             <div className='flex'>
               <div className='mx-1'> <Link href={'/admin/login'}> login </Link> </div>

@@ -1,6 +1,8 @@
 import log from "logger";
 import notificationService, { NotificationOptions, NotificationService } from "notifications";
-import queueService, { NOTIFICATION_QUEUE } from "queue";
+import { NOTIFICATION_QUEUE } from "queue";
+import Container from "typedi";
+import PubSubService from "pub-sub";
 
 const message = (type: string) => {
   switch (type) {
@@ -11,16 +13,17 @@ const message = (type: string) => {
   }
 };
 
+const pubsub = Container.get(PubSubService);
 async function run() {
   try {
     const notifications = notificationService();
-    const queue = await queueService().connect();
+
     const channels = {
       email: notifications.getInstanceOfNotificationType("email").connect(),
       sms: notifications.getInstanceOfNotificationType("sms").connect()
     }
 
-    await queue.consume(NOTIFICATION_QUEUE, {}, async (value: string) => {
+    await pubsub.consume(NOTIFICATION_QUEUE, async (value: string) => {
       const { destination, channel, type } = JSON.parse(value) as NotificationOptions;
       log.info(value);
       log.info(`${type}, ${destination}`)

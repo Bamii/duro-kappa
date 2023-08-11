@@ -1,12 +1,13 @@
 import { Response, NextFunction } from "express";
 import { sendError } from "expressapp/src/utils";
-import databaseClient from "database";
+import Database from "database";
 import { User, Admin } from "database/src/models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config, { ApplicationError } from "config";
+import { Container } from "typedi";
 
-const database = databaseClient();
+const database = Container.get(Database);
 const SALT_ROUNDS = config.salt_rounds;
 const TOKEN_SECRET_KEY = config.token_secret;
 
@@ -29,7 +30,7 @@ export const clientAuth = () => {
       req.user = user;
       return next();
     } catch (error: any) {
-      if(error instanceof ApplicationError) 
+      if (error instanceof ApplicationError)
         return sendError(res, error.message, { status: 401 });
 
       return sendError(res, "An application error occured.", { status: 500 })
@@ -58,9 +59,9 @@ export const adminAuth = (isSuperAdmin: boolean) => {
       req.user = user;
       return next();
     } catch (error: any) {
-      if(error instanceof ApplicationError) 
+      if (error instanceof ApplicationError)
         return sendError(res, error.message, { status: 401 });
-        
+
       return sendError(res, "An application error occured.", { status: 500 })
     }
   }
