@@ -7,11 +7,12 @@ const router = Router();
 
 // endpoints.
 router.use(
-  sms,
-  () => {
-    merchant_registration();
-  }
+  sms
 );
+
+router.use(() => {
+  merchant_registration();
+})
 
 
 export default express(router);

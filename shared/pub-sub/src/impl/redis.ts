@@ -1,17 +1,18 @@
 import { PubSub } from '../index'
 import QueueImpl from 'queue';
 import log from "logger";
-import Container, { Service } from "typedi";
+import { Container, Service } from "typedi";
 
-const Queue = Container.get(QueueImpl);
 @Service()
 export default class Redis implements PubSub {
-  consuming: boolean = false;  
+  consuming: boolean = false;
+  queue = Container.get(QueueImpl);
 
-  constructor(public queue: typeof Queue) {}
+  // constructor(public queue: Rediss) {}
 
   async publish<T>(topic: string, value: T): Promise<void> {
-      this.queue.enqueue(topic, { topic: "", ...value })
+    log.info(value);
+    this.queue.enqueue(topic, { topic: "", value: "" })
   }
 
   async subscribe(topic: string, callback: Function | Awaited<Function>): Promise<void> {
@@ -22,7 +23,7 @@ export default class Redis implements PubSub {
     this.consuming = true;
     while (this.consuming) {
       try {
-        //log.info('starting dequeue.')
+        // log.info('starting dequeue.')
         let res = await this.queue.dequeue(topic, { topic: "" });
         //log.info(res);
         if (res)
