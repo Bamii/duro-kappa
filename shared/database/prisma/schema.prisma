@@ -63,5 +63,5 @@ model Queue {
   duration    String  @default("9-17")
   qr_code     String?
   users       User[]
-  active      Boolean
+  active      Boolean @default(false)
 }
