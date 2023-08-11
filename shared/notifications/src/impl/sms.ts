@@ -5,7 +5,7 @@ import log from "logger"
 export class SMSNotificationService implements NotificationService {
   client: Mailjet | null = null;
 
-  connect(): this {
+  async connect(): Promise<this> {
     const api_token = process.env.API_TOKEN ?? "";
 
     log.info(api_token)

@@ -10,7 +10,7 @@ const NotificationServices = {
 
 export abstract class NotificationService {
   constructor() { }
-  abstract connect(): this
+  abstract connect(): Promise<this>
   abstract sendNotification(notification: Omit<NotificationOptions, 'channel' | 'type'>): Promise<void>
 }
 
@@ -49,3 +49,11 @@ export default (function() {
     return instance;
   }
 })()
+
+// const me = yo();
+// const email = me.getInstanceOfNotificationType("email");
+
+// email.sendNotification({
+//   destination: "",
+//   message: "hello"
+// });

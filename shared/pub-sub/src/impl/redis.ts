@@ -5,17 +5,19 @@ import Container, { Service } from "typedi";
 
 const Queue = Container.get(QueueImpl);
 @Service()
-export default class Redis extends PubSub {
+export default class Redis implements PubSub {
   consuming: boolean = false;  
 
-  constructor(public queue: typeof Queue) {
-    super();
-  }
+  constructor(public queue: typeof Queue) {}
 
   async publish<T>(topic: string, value: T): Promise<void> {
       this.queue.enqueue(topic, { topic: "", ...value })
   }
 
+  async subscribe(topic: string, callback: Function | Awaited<Function>): Promise<void> {
+    this.consume(topic, callback);
+  }
+  
   async consume(topic: string, callback: Function | Awaited<Function>): Promise<void> {
     this.consuming = true;
     while (this.consuming) {

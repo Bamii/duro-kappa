@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf ../sdk ../docs",
-    "_build": "pnpm clean && pnpm gen:sdk && pnpm gen:docs",
-    "start:dev": "prism mock duro.yaml",
+    "build": "pnpm clean && pnpm gen:sdk && pnpm gen:docs",
     "gen:sdk": "openapi-generator-cli generate -i duro.yaml -g typescript -o ../sdk",
     "gen:docs": "redocly build-docs duro.yaml --theme.openapi.disableSearch -o ../docs/index.html"
   },

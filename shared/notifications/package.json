@@ -11,8 +11,10 @@
   },
   "keywords": [],
   "dependencies": {
-    "logger": "workspace:*",
+    "@google-cloud/local-auth": "2.1.0",
     "config": "workspace:*",
+    "googleapis": "^124.0.0",
+    "logger": "workspace:*",
     "node-mailjet": "^6.0.2",
     "queue": "workspace:*",
     "typescript": "^5.0.4"

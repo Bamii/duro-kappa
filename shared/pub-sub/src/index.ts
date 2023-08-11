@@ -5,9 +5,7 @@ import "reflect-metadata";
 export abstract class PubSub {
     abstract publish<T>(topic: string, value: T): void;
 
-    async subscribe(topic: string, callback: Function | Awaited<Function>): Promise<void> {
-        this.consume(topic, callback);
-    }
+    abstract subscribe(topic: string, callback: Function | Awaited<Function>): Promise<void>
 
     abstract consume(topic: string, callback: Function | Awaited<Function>): Promise<void>
 }

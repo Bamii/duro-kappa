@@ -8,11 +8,13 @@ import { sendError, sendSuccess } from 'expressapp/src/utils';
 import { Merchant, Branch, Admin, Queue, Input } from 'database/src/models';
 import { extract, adminAuth, comparePassword, hashPassword, signJWT } from "auth"
 import * as validator from './middleware';
+import CacheInstance, { QUEUE_DURATION_CACHE } from 'cache';
 const router = Router();
 
 // const cache = Container.get(CacheInstance);
 const database = Container.get(DatabaseInstance);
 const queue = Container.get(QueueInstance);
+const cache = Container.get(CacheInstance)
 
 // onboard...
 router.post('/onboard', validator.createMerchantValidation, async (_req, res) => {
@@ -203,6 +205,27 @@ router.get('/currently-attending-to', validator.queueActionValidation, adminAuth
     return sendError(res, "An error occured while getting the list of people you're currently attending to. Please try again later.")
   }
 });
+
+router.post('/queue/extend', validator.advanceQueueValidation, adminAuth(true), async (req: any & { user: Admin }, res: Response) => {
+  try {
+    const { branchId } = req.user;
+      const { queueId, time } = req.body;
+      const queueToAdvance = await database.getQueueById(Number.parseInt(queueId))
+  
+      if (!queueToAdvance)
+        return sendError(res, "hmmm... queue could not be found");
+  
+      if (branchId !== queueToAdvance.branchId) {
+        log.info("a sly fox tried to steal our hen.")
+        return sendError(res, "closed sesame.", { status: 401 })
+      }
+  
+      cache.insert(QUEUE_DURATION_CACHE, { key  : queueId, value: time });
+      return sendSuccess(res, "Successfully extended queue time.")
+  } catch (error) {
+      return sendError(res, "An error occured while extending the queue end time.")
+  }  
+})
 
 // SUPERADMIN JOB!
 router.post('/branch/create', adminAuth(true), async (req: any & { user: Admin }, res: any) => {
