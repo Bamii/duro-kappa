@@ -11,24 +11,49 @@ export default class Redis implements Cache {
 
   constructor() {
     this.connect();
-    log.info(config);
+    log.info("[cache] connecting to redis instance");
   }
 
-  async connect() {
-    log.info('connecting')
-    return this;
+  async connect(): Promise<this> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.client = new RedisClient(config.connection_url);
+        resolve(this)
+      } catch (error: any) {
+        log.error(error.message);
+        reject('err')
+      }
+    })
   }
 
-  insert(topic: string): void {
-    log.info(topic)
+  async insert(topic: string, object: { key: string, value: string }): Promise<void> {
+    if (!this.client) return;
+    try {
+      log.info("inserting into ", topic, ":",  JSON.stringify(object)) 
+      await this.client.hset(topic, { [object.key]: object.value });
+    } catch (error: any) {
+      log.error(error.message);
+    }
   }
 
-  invalidateKeys(topic: string, keys: string[]): void {
-    log.info(topic, keys)
+  async invalidateKeys(topic: string, keys: string[]): Promise<void> {
+    if (!this.client) return;
+    try {
+      log.info("invalidating keys from: ", topic, ":",  keys) 
+      await this.client.hdel(topic, ...keys)
+    } catch (error: any) {
+      log.error(error.message);
+    }
   }
 
-  invalidateAllKeys(topic: string): void {
-    log.info(topic)
+  async invalidateAllKeys(topic: string): Promise<void> {
+    if (!this.client) return;
+    try {
+      log.info("invalidating all keys from: ", topic) 
+      await this.client.del(topic)
+    } catch (error: any) {      
+      log.error(error.message);
+    }
   }
 }
 

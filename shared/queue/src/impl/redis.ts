@@ -6,12 +6,12 @@ import _config from "config";
 const config = _config.queue;
 
 @Service()
-export default class Redis extends Queue {
+export default class Redis implements Queue {
   client: RedisClient | null = null;
   consuming: boolean = false;
 
   constructor() {
-    super()
+    // super()
     this.connect();
   }
 

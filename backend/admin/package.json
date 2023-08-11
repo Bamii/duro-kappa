@@ -6,8 +6,7 @@
   "types": "src/index.ts",
   "scripts": {
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
-    "build": "tsc --incremental",
-    "start:dev": "PORT=5000 nodemon ./src/index.ts"
+    "build": "tsc --incremental"
   },
   "keywords": [],
   "author": "",
