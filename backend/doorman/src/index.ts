@@ -2,6 +2,7 @@ import expressapp from 'expressapp';
 import { Router } from "express";
 import duro from "duro-queue/src/routes";
 import admin from "admin/src/routes";
+import "newrelic";
 
 const router = Router();
 
