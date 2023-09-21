@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import cors from 'cors';
-import notFoundMiddleware from 'notfoundmiddleware';
+import notFoundMiddleware, { errorMiddleware } from 'notfoundmiddleware';
 import log from "logger";
 import config from "config";
 
@@ -20,7 +20,7 @@ const expressApp = (router: Router, _mw?: string[]) => {
   app.use(morgan);
 
   app.use('/', router);
-  app.use(notFoundMiddleware);
+  app.use(notFoundMiddleware, errorMiddleware);
 
   const port = config.port || randomPort();
   app.listen(port, () => {

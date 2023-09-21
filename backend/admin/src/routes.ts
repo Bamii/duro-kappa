@@ -11,7 +11,6 @@ import * as validator from './middleware';
 import CacheInstance, { QUEUE_DURATION_CACHE } from 'cache';
 const router = Router();
 
-// const cache = Container.get(CacheInstance);
 const database = Container.get(DatabaseInstance);
 const queue = Container.get(QueueInstance);
 const cache = Container.get(CacheInstance)
@@ -343,12 +342,4 @@ router.get('/queue/list', adminAuth(false), async (req: any & { user: Admin }, r
   }
 });
 
-// update merchant details
-//router.patch('/merchant', async (req, res) => {
-//  console.log(req, res);
-//})
-
-
-
 export default router;
-

@@ -1,10 +1,9 @@
 import { Response, NextFunction } from "express";
-import { sendError } from "expressapp/src/utils";
 import Database from "database";
 import { User, Admin } from "database/src/models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import config, { ApplicationError } from "config";
+import config, { sendError, ApplicationError } from "config";
 import { Container } from "typedi";
 
 const database = Container.get(Database);

@@ -23,7 +23,6 @@ export function BranchProvider({ children }: { children: React.ReactNode }) {
     return { message }
   }
 
-
   return (
     <BranchContext.Provider value={{ branches, get_branches, create_branch }}>
       {children}

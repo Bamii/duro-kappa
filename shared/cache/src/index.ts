@@ -1,3 +1,4 @@
+import { Token } from "typedi";
 import Redis from "./impl/redis";
 import 'reflect-metadata';
 
@@ -23,7 +24,7 @@ type FactorySettings = {
 }
 
 function cacheFactory({ cache = "redis" }: FactorySettings) {
-  return caches[cache];
+  return caches[cache] as Token<Cache>;
 }
 
 export default (function() {

@@ -14,6 +14,7 @@
   "dependencies": {
     "cd": "^0.3.3",
     "express": "^4.18.2",
+    "config": "workspace:*",
     "fs-monorepo": "link:../.."
   },
   "devDependencies": {

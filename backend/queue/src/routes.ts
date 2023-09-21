@@ -13,6 +13,10 @@ const database = Container.get(Database);
 const queue = Container.get(Queue);
 const router = Router();
 
+router.get("/", (_, __, next) => {
+  next(new Error("heyy"))
+})
+
 // join queue.
 router.post('/join/:merchant_queue', joinQueueValidation, async (_req, res) => {
   const { email, name } = _req.body;
@@ -117,9 +121,6 @@ router.post('/leave', clientAuth(), async (_req: any & { user: User }, res) => {
   }
 })
 
-
-// TODO:: change to get details
-// get current position on queue
 router.get('/details', clientAuth(), async (req: any & { user: User }, res: any) => {
   const user = req.user; // parse token.
 
