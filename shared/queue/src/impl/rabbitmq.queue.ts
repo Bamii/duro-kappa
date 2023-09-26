@@ -36,7 +36,7 @@ export default class RabbitMq implements Queue {
     }
   }
 
-  async enqueue<T>(queue: QueueType, { topic, ...value }: T & { topic: string }): Promise<void> {
+  async enqueue(queue: QueueType, { topic, ...value }: { topic: string; value: string }): Promise<void> {
     console.log(queue, topic)
     const channel = await this.client.channel()
     try {
@@ -51,7 +51,7 @@ export default class RabbitMq implements Queue {
     }
   }
 
-  async dequeue<T, U>(queue: QueueType, options: T & { topic: string }): Promise<U | null> {
+  async dequeue<U>(queue: QueueType, options: { topic: string }): Promise<U | null> {
     console.log(queue, options)
     return {} as U
   }
@@ -69,6 +69,7 @@ export default class RabbitMq implements Queue {
     console.log(queue, value, options)
     return 0;
   }
+  
   async length(queue: QueueType): Promise<number> {
     return queue.length;
   }

@@ -15,7 +15,7 @@ router.post(
     const merchant = _req.body as Merchant;
     try {
       const result = await database.insertMerchant(merchant)
-      await queue.enqueue(MERCHANT_REGISTRATION_QUEUE, result.id)
+      await queue.enqueue(MERCHANT_REGISTRATION_QUEUE, { topic: "", value: `${result.id}` })
       return sendSuccess(res, "Successfully registered your business.")
     } catch (error: any) {
       return sendError(res, error.message)

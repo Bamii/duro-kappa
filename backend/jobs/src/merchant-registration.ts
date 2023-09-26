@@ -2,6 +2,7 @@ import QueueInstance, { MERCHANT_REGISTRATION_QUEUE, NOTIFICATION_QUEUE } from "
 import StorageInstance from "storage";
 import PubSubService from "pub-sub";
 import DatabaseInstance from 'database';
+import NotificationService, { MERCHANT_REGISTRATION_NOTIFICATION } from "notifications";
 import { Queue } from "database/src/models";
 import qrcode = require("qrcode");
 import { readFileSync, rmSync } from "node:fs";
@@ -14,6 +15,8 @@ const database = Container.get(DatabaseInstance);
 const queue = Container.get(QueueInstance);
 const storage = Container.get(StorageInstance);
 const pubsub = Container.get(PubSubService);
+const notifications = NotificationService();
+const email_notification = notifications.getInstanceOfNotificationType("email")
 
 async function run() {
   try {
@@ -33,10 +36,14 @@ async function run() {
         const url: string = await storage.upload(filename, readFileSync(filename))
         rmSync(filename);
         //const url = `${merchant_url}/${filename}`
+
         // update the merchant's qr_code url.
         await database.updateQueueById(Number.parseInt(id), { ...new_queue, qr_code: url });
         const business = await database.getBusinessBranchById(`${new_queue.branchId}`);
         log.info(`Successfully updated queue with id:${id}'s qr_code: ${url}`)
+
+        // create notification user
+        await email_notification.registerUser(id, `${business.admin?.email}`)
 
         // enqueue notification.
         await queue.enqueue(
@@ -46,7 +53,8 @@ async function run() {
             value: JSON.stringify({
               channel: "email",
               destination: business.admin?.email,
-              type: "MERCHANT_REGISTRATION"
+              type: MERCHANT_REGISTRATION_NOTIFICATION,
+              data: { userid: id }
             })
           }
         )

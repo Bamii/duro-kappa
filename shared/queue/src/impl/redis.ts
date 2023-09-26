@@ -11,7 +11,6 @@ export default class Redis implements Queue {
   consuming: boolean = false;
 
   constructor() {
-    // super()
     this.connect();
   }
 
@@ -27,7 +26,7 @@ export default class Redis implements Queue {
     })
   }
 
-  async enqueue<T>(queue: QueueType | string, { topic, value }: T & { topic: string, value: string }): Promise<void> {
+  async enqueue(queue: QueueType | string, { topic, value }: { topic: string, value: string }): Promise<void> {
     if (!this.client) return;
     try {
       await this.client.xadd(`${queue}:${topic ?? ""}`, "*", "value", value);
@@ -37,7 +36,7 @@ export default class Redis implements Queue {
     }
   }
 
-  async dequeue<T, U>(queue: QueueType | string, { topic }: T & { topic: string, total?: any }): Promise<U | null> {
+  async dequeue<U>(queue: QueueType | string, { topic }: { topic: string, total?: any }): Promise<U | null> {
     try {
       const queueName = `${queue}:${topic ?? ""}`;
       let response = await this.client?.xread(

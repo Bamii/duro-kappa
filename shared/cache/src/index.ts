@@ -4,6 +4,7 @@ import 'reflect-metadata';
 
 export abstract class Cache {
   abstract connect(): Promise<this>
+  abstract get(topic: string, key: string): Promise<string | null>
   abstract insert(topic: string, object: { key: string, value: string }): void
   abstract invalidateKeys(topic: string, keys: string[]): void
   abstract invalidateAllKeys(topic: string): void

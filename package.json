@@ -11,9 +11,16 @@
     "start:prod": "pnpm run --stream -r start:setup && cd /app && pnpm run --stream -r start:prod",
     "build": "pnpm --stream -r run build",
     "clean": "pnpm -r run clean",
-    "test:ci": "pnpm --stream -r run test:ci"
+    "test:ci": "pnpm --stream -r run test:ci",
+    "prepare": "husky install",
+    "lint": "pretty-quick --staged"
   },
   "keywords": [],
   "author": "chaluwa@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "prettier": "^3.0.1",
+    "pretty-quick": "^3.1.3"
+  }
 }

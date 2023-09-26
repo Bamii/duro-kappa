@@ -4,32 +4,28 @@ import { NOTIFICATION_QUEUE } from "queue";
 import Container from "typedi";
 import PubSubService from "pub-sub";
 
-const message = (type: string) => {
-  switch (type) {
-    case "MERCHANT_REGISTRATION":
-      return `congratulations, you have registered your business. you can add more branches on your dashboard.`
-    default:
-      return ``;
-  }
-};
-
 const pubsub = Container.get(PubSubService);
+const notifications = notificationService();
+
 async function run() {
   try {
-    const notifications = notificationService();
-
     const channels = {
       email: await notifications.getInstanceOfNotificationType("email").connect(),
       sms: await notifications.getInstanceOfNotificationType("sms").connect()
     }
 
     await pubsub.consume(NOTIFICATION_QUEUE, async (value: string) => {
-      const { destination, channel, type } = JSON.parse(value) as NotificationOptions;
+      const { destination, channel, type, data, message } = JSON.parse(value) as NotificationOptions;
       log.info(value);
-      log.info(`${type}, ${destination}`)
+      log.info(`${type}, ${destination}`);
+
       try {
         const transporter: NotificationService = channels[channel];
-        await transporter.sendNotification({ message: message(type), destination })
+        await transporter.sendNotification({
+          message,
+          type, data,
+          destination
+        });
       } catch (error: any) {
         log.error(error.message);
       }

@@ -3,6 +3,7 @@ import { Storage } from '..';
 import { Service } from "typedi";
 import { createClient } from '@supabase/supabase-js'
 import _config, { ApplicationError } from "config";
+
 const config = _config.storage;
 
 @Service()

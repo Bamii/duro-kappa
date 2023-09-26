@@ -29,17 +29,30 @@ export default class Redis implements Cache {
   async insert(topic: string, object: { key: string, value: string }): Promise<void> {
     if (!this.client) return;
     try {
-      log.info("inserting into ", topic, ":",  JSON.stringify(object)) 
+      log.info(`inserting into: ${topic} : ${ JSON.stringify(object)}`) 
       await this.client.hset(topic, { [object.key]: object.value });
     } catch (error: any) {
       log.error(error.message);
     }
   }
 
+  async get(topic: string, key: string): Promise<string | null> {
+    if (!this.client) return null;
+    try {
+      log.info(`getting key from: ${topic} : ${key}`) 
+      const value = await this.client.hget(topic, key)
+      log.info(`value is ${value}`);
+      return value;
+    } catch (error: any) {
+      log.error(error.message);
+      throw new Error("")
+    }
+  }
+
   async invalidateKeys(topic: string, keys: string[]): Promise<void> {
     if (!this.client) return;
     try {
-      log.info("invalidating keys from: ", topic, ":",  keys) 
+      log.info(`invalidating keys from: ${topic} : ${keys}`)
       await this.client.hdel(topic, ...keys)
     } catch (error: any) {
       log.error(error.message);
@@ -49,7 +62,7 @@ export default class Redis implements Cache {
   async invalidateAllKeys(topic: string): Promise<void> {
     if (!this.client) return;
     try {
-      log.info("invalidating all keys from: ", topic) 
+      log.info(`invalidaating all keys from: ${topic}`);
       await this.client.del(topic)
     } catch (error: any) {      
       log.error(error.message);

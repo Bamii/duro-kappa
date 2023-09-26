@@ -7,18 +7,27 @@ const NotificationServices = {
   "sms": SMSNotificationService
 } as const;
 
+export const CLIENT_QUEUE_JOIN = "CLIENT_QUEUE_JOIN";
+export const CLIENT_QUEUE_LEAVE = "CLIENT_QUEUE_LEAVE";
+export const MERCHANT_REGISTRATION_NOTIFICATION = "MERCHANT_REGISTRATION_NOTIFICATION";
+export type NOTIFICATION_TYPES = typeof MERCHANT_REGISTRATION_NOTIFICATION 
+  | typeof CLIENT_QUEUE_JOIN 
+  | typeof CLIENT_QUEUE_LEAVE;
+
 
 export abstract class NotificationService {
   constructor() { }
   abstract connect(): Promise<this>
-  abstract sendNotification(notification: Omit<NotificationOptions, 'channel' | 'type'>): Promise<void>
+  abstract registerUser(userid: string, contact: string): Promise<void>
+  abstract sendNotification(notification: Omit<NotificationOptions, 'channel'>): Promise<void>
 }
 
 export type NotificationOptions = {
   destination: "broadcast" | string;
-  type: string
+  type: NOTIFICATION_TYPES
   message: string
   channel: NotificationType;
+  data: Record<any, any>
 }
 export type NotificationType = keyof typeof NotificationServices;
 type NotificationServicesListType<Type> = { -readonly [Property in keyof Type]: Type[Property] }
@@ -41,17 +50,19 @@ class Factory {
   }
 }
 
-export default (function() {
+const exporter = (function() {
   log.info("this is entering")
   let instance: Factory;
   return (): Factory => {
     if (!instance) instance = new Factory(NotificationServices);
     return instance;
   }
-})()
+})();
 
-// const me = yo();
-// const email = me.getInstanceOfNotificationType("email");
+export default exporter;
+
+// const me = exporter();
+// const email = me.getInstanceOfNotificationType("sms");
 
 // email.sendNotification({
 //   destination: "",

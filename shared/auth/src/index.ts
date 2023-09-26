@@ -14,7 +14,7 @@ export const clientAuth = () => {
   return async (req: any & User, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
     try {
-      if (!authorization) throw new ApplicationError("close sesame");
+      if (!authorization) throw new ApplicationError("closed sesame");
 
       const [protocol, token] = authorization.split(" ");
       if (protocol !== "Bearer" || !token) throw new ApplicationError("gerrarahia! you sly being.");
@@ -24,7 +24,7 @@ export const clientAuth = () => {
       const user = await database.getUserByEmailOrPhone({ email });
 
       if (!user)
-        throw new ApplicationError("huhuhu... ");
+        throw new ApplicationError("hmm there seem to have been an error, fair maiden.");
 
       req.user = user;
       return next();
@@ -51,7 +51,7 @@ export const adminAuth = (isSuperAdmin: boolean) => {
       const user = await database.getAdminByEmail(email);
 
       if (!user)
-        throw new ApplicationError("huhuhu...");
+        throw new ApplicationError("hmm there seem to have been an error, fair maiden.");
       if (isSuperAdmin && !user.superAdmin)
         throw new ApplicationError("closed sesame");
 

@@ -41,6 +41,7 @@ export abstract class Database {
 
   abstract updateUserById(id: number, user: Update<User>, where?: Partial<User>): Promise<User>
 
+  abstract updateUsers(where: Update<User>, data: Update<User>): void
 
   // admin
   abstract insertAdmin(merchant: Input<Admin>): Promise<Admin>
@@ -59,6 +60,8 @@ export abstract class Database {
   abstract getQueueByName(name: string): Promise<Queue | null>
 
   abstract deleteQueue(id: number): Promise<void>
+
+  abstract getQueues(where: Update<Queue>): Promise<Queue[]>
 
   abstract getBranchQueues(id: number): Promise<Queue[]>
 
@@ -119,7 +122,7 @@ export type Queue = {
   description: string
   branchId: number
   branch: Branch
-  duration?: `${string}_${string}`
+  duration: `${string}-${string}`
   qr_code?: string
   users?: User[]
   active: boolean

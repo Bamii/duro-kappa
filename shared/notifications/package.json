@@ -12,10 +12,13 @@
   "keywords": [],
   "dependencies": {
     "@google-cloud/local-auth": "2.1.0",
+    "@novu/node": "^0.17.2",
+    "@types/nodemailer": "^6.4.9",
     "config": "workspace:*",
     "googleapis": "^124.0.0",
     "logger": "workspace:*",
     "node-mailjet": "^6.0.2",
+    "nodemailer": "^6.9.4",
     "queue": "workspace:*",
     "typescript": "^5.0.4"
   },

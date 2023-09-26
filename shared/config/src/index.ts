@@ -50,5 +50,11 @@ export function sendError<T>(res: any, message: string, opts?: { status?: number
 
 export class ApplicationError extends Error {
   is_application_error: boolean = true;
+  code: number | null = null;
+
+  constructor(message: string, code: number | null = null) {
+    super(message);
+    this.code = code;
+  }
 }
 

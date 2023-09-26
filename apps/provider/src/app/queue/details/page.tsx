@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useAuthContext } from "@/contexts/auth.context";
 
 export default async function Page() {
-  const { meta, get_user_queue_details, leave_queue } = useQueueContext();
+  const { meta, get_user_queue_details, leave_queue: _leave_queue } = useQueueContext();
   const { user } = useAuthContext();
   const router = useRouter();
 
@@ -19,9 +19,9 @@ export default async function Page() {
       get_user_queue_details();
   }, [meta, get_user_queue_details])
 
-  const _leave_queue = async () => {
+  const leave_queue = async () => {
     try {
-      const { message } = await leave_queue();
+      const { message } = await _leave_queue();
       toast.success(message)
       router.push('/');
     } catch (error: any) {
@@ -36,13 +36,11 @@ export default async function Page() {
           <div className="_mx-auto">
             <Jumbotron
               cta={(
-                <div>
-                  <ModalTrigger id="create-queue">
-                    <Link href={`/admin/dashboard/queue/create`}>
-                      <Button> leave queue </Button>
-                    </Link>
-                  </ModalTrigger>
-                </div>
+                <Button
+                  onClick={() => leave_queue()}
+                >
+                  leave queue
+                </Button>
               )}
               text={`you are number ${meta.position} on the list!`}
             />

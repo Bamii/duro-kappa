@@ -187,6 +187,13 @@ export class Prisma extends Database {
     }
   }
 
+  async updateUsers(where: Update<User>, data: Update<User>): Promise<void> {
+    await this.client.user.updateMany({
+      where: { ...where },
+      data: { ...data }
+    });
+  }
+
   // admin
   async insertAdmin(value: Input<Admin>): Promise<Admin> {
     try {
@@ -196,6 +203,7 @@ export class Prisma extends Database {
       throw new Error(`admin record could not be inserted : ${error.message}`)
     }
   }
+
   async getAdminById(id: string): Promise<Admin> {
     try {
       return this.client.admin.findUnique({
@@ -244,6 +252,10 @@ export class Prisma extends Database {
       include: { branch: true, users: true },
       data: queue
     });
+  }
+
+  async getQueues(where: Update<Queue>): Promise<Queue[]> {
+    return this.client.queue.findMany({ where });
   }
 
   async insertQueue(queue: Input<Queue>): Promise<Queue> {

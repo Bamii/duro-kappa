@@ -6,17 +6,17 @@ import "reflect-metadata";
 export abstract class Queue {
   abstract connect(): Promise<this>
 
-  abstract enqueue<T>(queue: QueueType | string, value: T & { topic?: string }): Promise<void>
+  abstract enqueue(queue: QueueType | string, value: { topic?: string; value: string }): Promise<void>
 
- abstract  dequeue<T, U>(queue: QueueType | string, options: T & { topic?: string }): Promise<U | null>
+  abstract dequeue<U>(queue: QueueType | string, options: { topic?: string }): Promise<U | null>
 
   abstract dequeueItem(queue: QueueType | string, value: string, options: { topic: string }): Promise<string>
 
   abstract getQueue(queue: QueueType | string, options: { topic: string }): Promise<any[]>
 
- abstract  getIndexOf(queue: QueueType | string, value: string, options: { topic: string }): Promise<number>
+  abstract getIndexOf(queue: QueueType | string, value: string, options: { topic: string }): Promise<number>
 
- abstract  length(queue: QueueType | string, options: { read?: number, topic?: string }): Promise<number>
+  abstract length(queue: QueueType | string, options: { read?: number, topic?: string }): Promise<number>
 }
 
 export const NOTIFICATION_QUEUE = "NOTIFICATION_QUEUE" as const;
