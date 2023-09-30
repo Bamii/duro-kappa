@@ -65,21 +65,25 @@ router.post('/onboard', validator.createMerchantValidation, async (_req, res) =>
 
 // admin logins...
 router.post('/login', validator.loginValidator, async (req, res) => {
-  const { email, password } = req.body;
-  const user = await database.getAdminByEmail(email);
-  if (!user)
-    throw new ApplicationError("oops! invalid email and password combination.");
+  try {
+    const { email, password } = req.body;
+    const user = await database.getAdminByEmail(email);
+    if (!user)
+      throw new ApplicationError("oops! invalid email and password combination.");
 
-  const isValid = await comparePassword({ hashedPassword: user.password, password });
-  if (!isValid)
-    throw new ApplicationError("oops! invalid email and password combination.")
+    const isValid = await comparePassword({ hashedPassword: user.password, password });
+    if (!isValid)
+      throw new ApplicationError("oops! invalid email and password combination.")
 
-  const new_user = extract(user, 'password');
-  return sendSuccess(
-    res,
-    "Logged in successfully!",
-    { data: { token: signJWT({ email }), user: new_user } }
-  )
+    const new_user = extract(user, 'password');
+    return sendSuccess(
+      res,
+      "Logged in successfully!",
+      { data: { token: signJWT({ email }), user: new_user } }
+    )
+  } catch (error) {
+    return sendError(res, "Error!")
+  }
 })
 
 router.post('/queue/user/dismiss', validator.dismissUserValidation, adminAuth(false), async (req: any & { user: Admin }, res: any) => {
