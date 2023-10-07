@@ -46,3 +46,33 @@ jobs:
           file: "cron.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-tray:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rlgoDzvc -i"
+          SOURCE: "deployments/terraform/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+          SCRIPT_BEFORE: |
+            whoami
+            ls -al
+          SCRIPT_AFTER: |
+            STORAGE_URL=${{ secrets.STORAGE_URL }}
+            STORAGE_KEY=${{ secrets.STORAGE_KEY }}
+            QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}
+            EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}
+            NODE_ENV=production
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            whoami
+            ls -al
+            echo $RSYNC_STDOUT
+
+
