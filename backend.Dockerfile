@@ -37,6 +37,7 @@ ENV DATABASE_URL $DATABASE_URL
 ENV NEW_RELIC_NO_CONFIG_FILE=true
 
 ENV NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true
+
 env NEW_RELIC_LOG=stdout
 # etc.
 
@@ -44,10 +45,6 @@ workdir /app
 
 env PORT 4000
 
-ENV NEW_RELIC_NO_CONFIG_FILE=true
-ENV NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true
-env NEW_RELIC_LOG=stdout
-# etc.
 expose 4000
 
 cmd ["pnpm", "run", "start:prod"]
