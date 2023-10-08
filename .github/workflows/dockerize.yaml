@@ -67,14 +67,16 @@ jobs:
             whoami
             ls -al
           SCRIPT_AFTER: |
-            STORAGE_URL=${{ secrets.STORAGE_URL }}
-            STORAGE_KEY=${{ secrets.STORAGE_KEY }}
-            QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}
-            EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}
-            NODE_ENV=production
-            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            terraform init
+            terraform apply \
+              -var='env=[STORAGE_URL=${{ secrets.STORAGE_URL }}, \
+              STORAGE_KEY=${{ secrets.STORAGE_KEY }}, \
+              QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}, \
+              DATABASE_URL=${{ secrets.DATABASE_URL }}, \
+              EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}, \
+              EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}, \
+              NODE_ENV=production, \
+              NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}']
             whoami
             ls -al
             echo $RSYNC_STDOUT
