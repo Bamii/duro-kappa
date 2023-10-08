@@ -95,7 +95,7 @@ jobs:
           SCRIPT_AFTER: |
             echo ${{ env.TF_VARS }} ${{ env.DB_VARS }}
             terraform init
-            terraform apply -var ${{ env.TF_VARS }} -var ${{ env.DB_VARS }}
+            terraform apply -var "${{ env.TF_VARS }}" -var "${{ env.DB_VARS }}"
             echo $RSYNC_STDOUT
 
 
