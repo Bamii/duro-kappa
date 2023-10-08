@@ -72,6 +72,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Build terraform apply command.
+        run: |
+          TF_COMMAND="terraform apply \
+            -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}", \
+            "STORAGE_KEY=${{ secrets.STORAGE_KEY }}", \
+            "QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}", \
+            "DATABASE_URL=${{ secrets.DATABASE_URL }}", \
+            "EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}", \
+            "EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}", \
+            "NODE_ENV=production", \
+            "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' \
+            -var='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'"
+          echo "::set-env name=TF_COMMAND::$TF_COMMAND"
+
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
         with:
@@ -86,16 +100,7 @@ jobs:
             ls -al
           SCRIPT_AFTER: |
             terraform init
-            terraform apply \
-            -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}", \
-            "STORAGE_KEY=${{ secrets.STORAGE_KEY }}", \
-            "QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}", \
-            "DATABASE_URL=${{ secrets.DATABASE_URL }}", \
-            "EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}", \
-            "EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}", \
-            "NODE_ENV=production", \
-            "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' \
-            -var='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'
+            echo $TF_COMMAND | sh
             whoami
             ls -al
             echo $RSYNC_STDOUT
