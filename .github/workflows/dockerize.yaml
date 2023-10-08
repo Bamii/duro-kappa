@@ -74,12 +74,12 @@ jobs:
 
       - name: Build terraform apply vars.
         run: |
-          echo TF_VARS="env=[\'QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}\',\'DATABASE_URL=${{ secrets.DATABASE_URL }}\',\'EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}\',\
-          \'EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}\',\'NODE_ENV=production\',\'NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}\',\'STORAGE_URL=${{ secrets.STORAGE_URL }}\',\'STORAGE_KEY=\']" >> $GITHUB_ENV
+          echo TF_VARS="env=[\"QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}\",\"DATABASE_URL=${{ secrets.DATABASE_URL }}\",\"EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}\",\
+          \"EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}\",\"NODE_ENV=production\",\"NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}\",\"STORAGE_URL=${{ secrets.STORAGE_URL }}\",\"STORAGE_KEY=\"]" >> $GITHUB_ENV
         
       - name: Build terraform postgres vars.
         run: |
-          echo DB_VARS="postgress=[\'POSTGRES_USER=${{ secrets.POSTGRES_USER }}\',\'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}\']" >> $GITHUB_ENV
+          echo DB_VARS="postgress=[\"POSTGRES_USER=${{ secrets.POSTGRES_USER }}\",\"POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}\"]" >> $GITHUB_ENV
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
         with:
