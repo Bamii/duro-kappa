@@ -37,7 +37,7 @@ jobs:
         with:
           file: "frontend.Dockerfile"
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-butler:latest
 
