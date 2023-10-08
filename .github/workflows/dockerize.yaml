@@ -95,7 +95,7 @@ jobs:
             "EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}", \
             "NODE_ENV=production", \
             "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' \
-            -var='postgres=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'
+            -var='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'
             whoami
             ls -al
             echo $RSYNC_STDOUT
