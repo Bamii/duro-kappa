@@ -99,7 +99,7 @@ jobs:
           SCRIPT_AFTER: |
             terraform init
             $TF_COMMAND
-            echo $TF_COMMAND
+            echo "heyy"
             echo $RSYNC_STDOUT
 
 
