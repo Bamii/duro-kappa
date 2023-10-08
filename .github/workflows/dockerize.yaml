@@ -99,7 +99,8 @@ jobs:
             ls -al
           SCRIPT_AFTER: |
             terraform init
-            echo $TF_COMMAND | sh
+            echo $TF_COMMAND
+            $TF_COMMAND
             whoami
             ls -al
             echo $RSYNC_STDOUT
