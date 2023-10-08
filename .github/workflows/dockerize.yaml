@@ -98,8 +98,8 @@ jobs:
             ls -al
           SCRIPT_AFTER: |
             terraform init
-            $TF_COMMAND
-            echo "heyy"
+            {{ $env.TF_COMMAND }}
+            echo {{ $env.TF_COMMAND }}
             echo $RSYNC_STDOUT
 
 
