@@ -10,9 +10,17 @@ terraform {
 
 provider "docker" {}
 
+variable "postgress" {
+  description = "environment variables"
+  type        = set(string)
+  
+  default = []
+}
+
 variable "env" {
-  description = "A list of environment variables"
-  type = list(string)
+  description = "environment variables"
+  type        = set(string)
+  
   default = []
 }
 
@@ -62,8 +70,8 @@ resource "docker_container" "door" {
   }
 
   ports {
-    internal = 8080
-    external = 80
+    internal = 80    
+    external = 8081
   }
 }
 
@@ -97,6 +105,7 @@ resource "docker_container" "jobs" {
   restart = "always"
   must_run = true
 
+  env = var.env
   networks_advanced {
     name = docker_network.link.name
   }
@@ -119,6 +128,7 @@ resource "docker_container" "db" {
   restart = "always"
   must_run = true
   
+  env = var.postgress
   networks_advanced {
     name = docker_network.link.name
   }

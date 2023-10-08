@@ -9,10 +9,13 @@ import sms from './sms'
 const router = Router();
 router.use(sms);
 
-// cron jobs.
-notifications();
-merchant_registration();
-delete_queue_end_queue();
-dequeue_all_users();
+router.use(() => {
+  // cron jobs.
+  notifications();
+  merchant_registration();
+  delete_queue_end_queue();
+  dequeue_all_users();
+})
+
 
 export default express(router);
