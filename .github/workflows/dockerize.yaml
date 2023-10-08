@@ -72,18 +72,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Build terraform apply command.
+      - name: Build terraform apply vars.
         run: |
-          echo TF_COMMAND="terraform apply \
-            -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}", \
+          echo TF_VARS='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}", \
             "STORAGE_KEY=${{ secrets.STORAGE_KEY }}", \
             "QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}", \
             "DATABASE_URL=${{ secrets.DATABASE_URL }}", \
             "EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}", \
             "EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}", \
             "NODE_ENV=production", \
-            "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' \
-            -var='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'" >> $GITHUB_ENV
+            "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' >> $GITHUB_ENV
+      
+      - name: Build terraform postgres vars.
+        run: |
+          echo DB_VARS='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]' >> $GITHUB_ENV
 
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
@@ -97,9 +99,9 @@ jobs:
           SCRIPT_BEFORE: |
             ls -al
           SCRIPT_AFTER: |
+            echo ${{ env.TF_VARS }} ${{ env.DB_VARS }}
             terraform init
-            ${{ env.TF_COMMAND }}
-            echo ${{ env.TF_COMMAND }}
+            terraform apply -var ${{ env.TF_VARS }} -var ${{ env.DB_VARS }}
             echo $RSYNC_STDOUT
 
 
