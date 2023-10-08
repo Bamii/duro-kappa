@@ -99,7 +99,7 @@ jobs:
           SCRIPT_AFTER: |
             terraform init
             "${{ env.TF_COMMAND }}"
-            "echo ${{ $env.TF_COMMAND }}"
+            "echo ${{ env.TF_COMMAND }}"
             echo $RSYNC_STDOUT
 
 
