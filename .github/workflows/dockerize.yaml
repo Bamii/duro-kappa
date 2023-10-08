@@ -22,12 +22,22 @@ jobs:
           file: "backend.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-doorman:latest
+          build-args: |
+            STORAGE_URL=${{ secrets.STORAGE_URL }}
+            STORAGE_KEY=${{ secrets.STORAGE_KEY }}
+            QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}
+            EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}
+            NODE_ENV=production
 
       -
         name: Build and push butler
         uses: docker/build-push-action@v4
         with:
           file: "frontend.Dockerfile"
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-butler:latest
 
@@ -46,6 +56,14 @@ jobs:
           file: "cron.Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/duro-tray:latest
+          build-args: |
+            STORAGE_URL=${{ secrets.STORAGE_URL }}
+            STORAGE_KEY=${{ secrets.STORAGE_KEY }}
+            QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}
+            EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}
+            NODE_ENV=production
 
   deploy:
     runs-on: ubuntu-latest
@@ -69,14 +87,15 @@ jobs:
           SCRIPT_AFTER: |
             terraform init
             terraform apply \
-              -var='env=[STORAGE_URL=${{ secrets.STORAGE_URL }}, \
-              STORAGE_KEY=${{ secrets.STORAGE_KEY }}, \
-              QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}, \
-              DATABASE_URL=${{ secrets.DATABASE_URL }}, \
-              EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}, \
-              EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}, \
-              NODE_ENV=production, \
-              NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}']
+            -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}" \
+            "STORAGE_KEY=${{ secrets.STORAGE_KEY }}", \
+            "QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}", \
+            "DATABASE_URL=${{ secrets.DATABASE_URL }}", \
+            "EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}", \
+            "EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}", \
+            "NODE_ENV=production", \
+            "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' \
+            -var='postgres=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'
             whoami
             ls -al
             echo $RSYNC_STDOUT
