@@ -74,7 +74,8 @@ jobs:
 
       - name: Build terraform apply vars.
         run: |
-          echo TF_VARS="env=['STORAGE_URL=${{ secrets.STORAGE_URL }}','STORAGE_KEY=${{ secrets.STORAGE_KEY }}','QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}','DATABASE_URL=${{ secrets.DATABASE_URL }}','EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}','EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}','NODE_ENV=production','NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}']" >> $GITHUB_ENV
+          echo TF_VARS="env=['QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}','DATABASE_URL=${{ secrets.DATABASE_URL }}','EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}',\
+          'EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}','NODE_ENV=production','NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}','STORAGE_URL=${{ secrets.STORAGE_URL }}','STORAGE_KEY=${{ secrets.STORAGE_KEY }}']" >> $GITHUB_ENV
         
       - name: Build terraform postgres vars.
         run: |
@@ -89,7 +90,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
-          SCRIPT_BEFORE: |
+          SCRIPT_BEFORE: | 
             ls -al
           SCRIPT_AFTER: |
             echo ${{ env.TF_VARS }} ${{ env.DB_VARS }}
