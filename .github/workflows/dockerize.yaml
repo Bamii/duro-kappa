@@ -74,7 +74,7 @@ jobs:
 
       - name: Build terraform apply command.
         run: |
-          TF_COMMAND="terraform apply \
+          echo TF_COMMAND="terraform apply \
             -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}", \
             "STORAGE_KEY=${{ secrets.STORAGE_KEY }}", \
             "QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}", \
@@ -83,8 +83,7 @@ jobs:
             "EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}", \
             "NODE_ENV=production", \
             "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"]' \
-            -var='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'"
-          echo "::set-env name=TF_COMMAND::$TF_COMMAND"
+            -var='postgress=["POSTGRES_USER=${{ secrets.POSTGRES_USER }}","POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}"]'" >> $GITHUB_ENV
 
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
