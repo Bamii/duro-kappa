@@ -87,7 +87,7 @@ jobs:
           SCRIPT_AFTER: |
             terraform init
             terraform apply \
-            -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}" \
+            -var='env=["STORAGE_URL=${{ secrets.STORAGE_URL }}", \
             "STORAGE_KEY=${{ secrets.STORAGE_KEY }}", \
             "QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}", \
             "DATABASE_URL=${{ secrets.DATABASE_URL }}", \
