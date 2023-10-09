@@ -86,8 +86,8 @@ jobs:
           SCRIPT_AFTER: |
             cd ${{ secrets.REMOTE_TARGET }}
             terraform init
-            sudo terraform apply --auto-approve -var "env=[\"QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}\",\"DATABASE_URL=${{ secrets.DATABASE_URL }}\",\"EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}\",\n
-              \"EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}\",\"NODE_ENV=production\",\"NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}\",\"STORAGE_URL=${{ secrets.STORAGE_URL }}\",\"STORAGE_KEY=${{ secrets.STORAGE_KEY }}\"]" \
+            sudo terraform apply --auto-approve -var "env=[\"QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }}\",\"DATABASE_URL=${{ secrets.DATABASE_URL }}\",\"EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}\",\
+              \"EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}\",\"NODE_ENV=production\",\"NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}\",\"STORAGE_URL=${{ secrets.STORAGE_URL }}\",\"STORAGE_KEY=\'${{ secrets.STORAGE_KEY }}\'\"]" \
               -var "postgress=[\"POSTGRES_USER=${{ secrets.POSTGRES_USER }}\",\"POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}\"]"
             echo $RSYNC_STDOUT
 
