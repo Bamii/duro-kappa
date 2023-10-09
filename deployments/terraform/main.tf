@@ -71,7 +71,7 @@ resource "docker_container" "door" {
 
   ports {
     internal = 80    
-    external = 8081
+    external = 80
   }
 }
 
