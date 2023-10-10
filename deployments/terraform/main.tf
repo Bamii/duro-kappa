@@ -93,7 +93,7 @@ resource "docker_container" "frontend" {
   image = docker_image.frontend.image_id
   must_run = true
 
-  env = var.env
+  env = ["NEXT_PUBLIC_API_URL=http://doorman"]
   networks_advanced {
     name = docker_network.link.name
   }
