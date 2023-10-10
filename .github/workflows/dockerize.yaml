@@ -87,14 +87,14 @@ jobs:
           SCRIPT_AFTER: |
             cd ${{ secrets.REMOTE_TARGET }}
             
-            echo "STORAGE_URL=${{ secrets.STORAGE_URL }} \
-            STORAGE_KEY=${{ secrets.STORAGE_KEY }} \
-            QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }} \
-            DATABASE_URL=${{ secrets.DATABASE_URL }} \
-            EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }} \
-            EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }} \
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+            echo "STORAGE_URL=${{ secrets.STORAGE_URL }} \n
+            STORAGE_KEY=${{ secrets.STORAGE_KEY }} \n
+            QUEUE_CONNECTION_URL=${{ secrets.QUEUE_CONNECTION_URL }} \n
+            DATABASE_URL=${{ secrets.DATABASE_URL }} \n
+            EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }} \n
+            EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }} \n
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \n
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
 
             pwd
             ./deploy.sh
