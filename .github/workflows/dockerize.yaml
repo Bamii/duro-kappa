@@ -95,6 +95,7 @@ jobs:
             ls -al
           SCRIPT_AFTER: |
             cd $REMOTE_HOST
+            pwd
             ./deploy.sh
 
 
