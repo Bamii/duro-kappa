@@ -93,6 +93,7 @@ jobs:
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             EMAIL_PUBLIC_KEY=${{ secrets.EMAIL_PUBLIC_KEY }}
             EMAIL_PRIVATE_KEY=${{ secrets.EMAIL_PRIVATE_KEY }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             REMOTE_TARGET=${{ secrets.REMOTE_TARGET }}
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
