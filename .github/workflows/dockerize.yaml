@@ -78,7 +78,7 @@ jobs:
         env:
           STORAGE_URL: ${{ secrets.STORAGE_URL }}
           STORAGE_KEY: ${{ secrets.STORAGE_KEY }}
-          QUEUE_CONNECTION_UR: =${{ secrets.QUEUE_CONNECTION_URL }}
+          QUEUE_CONNECTION_URL: ${{ secrets.QUEUE_CONNECTION_URL }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           EMAIL_PUBLIC_KEY: ${{ secrets.EMAIL_PUBLIC_KEY }}
           EMAIL_PRIVATE_KEY: ${{ secrets.EMAIL_PRIVATE_KEY }}
