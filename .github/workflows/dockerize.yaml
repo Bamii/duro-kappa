@@ -94,6 +94,7 @@ jobs:
           SCRIPT_BEFORE: | 
             ls -al
           SCRIPT_AFTER: |
+            cd $REMOTE_HOST
             ./deploy.sh
 
 
