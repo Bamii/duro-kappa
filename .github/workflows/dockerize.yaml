@@ -94,7 +94,7 @@ jobs:
           SCRIPT_BEFORE: | 
             ls -al
           SCRIPT_AFTER: |
-            cd $REMOTE_HOST
+            cd ${{ secrets.REMOTE_TARGET }}
             pwd
             ./deploy.sh
 
