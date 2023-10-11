@@ -8,45 +8,48 @@ const config = _config.storage;
 
 @Service()
 export default class Supabase implements Storage {
-    client: any;
+  client: any;
 
-    constructor() {
-        this.connect();
-    }
-  
-    connect(): this {
-      try {
-        this.client = createClient(config.connection_url, config.private_key);
-        return this;
-      } catch (error: any) {
-        log.error('could not connect to client', error);
-        throw new ApplicationError("An error occured while connecting to the client.");
-      }
-    }
-  
-    get(file: string): string {
-      return file;
-    }
-  
-    // this function will replace the old file with the latest one provided the file 
-    // has been uploaded already
-    async upload<T>(file: string, object: T): Promise<string> {
-      log.info(file, object);
-      const { error } = await this.client
-        .storage
-        .from(config.qr_bucket)
-        .upload(`public/${file}`, object, {
-          contentType: 'image/png',
-          upsert: false,
-          cacheControl: 3600
-        });
-      if (error) throw new ApplicationError("An error occured while uploading the object.")
-      log.info("successfully uploaded file ", file);
-  
-      const { data: { publicUrl: url } } = this.client
-        .storage
-        .from(config.qr_bucket)
-        .getPublicUrl(`public/${file}`)
-      return url;
+  constructor() {
+    this.connect();
+  }
+
+  connect(): this {
+    try {
+      this.client = createClient(config.connection_url, config.private_key);
+      return this;
+    } catch (error: any) {
+      log.error('could not connect to client', error);
+      throw new ApplicationError("An error occured while connecting to the client.");
     }
   }
+
+  get(file: string): string {
+    return file;
+  }
+
+  // this function will replace the old file with the latest one provided the file 
+  // has been uploaded already
+  async upload<T>(file: string, object: T): Promise<string> {
+    log.info(file, object);
+    const { error } = await this.client
+      .storage
+      .from(config.qr_bucket)
+      .upload(`public/${file}`, object, {
+        contentType: 'image/png',
+        upsert: false,
+        cacheControl: 3600
+      });
+    if (error) {
+      log.error(error);
+      throw new ApplicationError("An error occured while uploading the object.")
+    }
+    log.info("successfully uploaded file ", file);
+
+    const { data: { publicUrl: url } } = this.client
+      .storage
+      .from(config.qr_bucket)
+      .getPublicUrl(`public/${file}`)
+    return url;
+  }
+}
