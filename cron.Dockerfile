@@ -34,7 +34,9 @@ env PORT 4000
 
 expose 4000
 
-cmd ["npx", "ts-node", "/app/backend/jobs/src/index.ts"]
+workdir /app
+
+cmd ["pnpm", "run", "start:prod"]
 
 
 
