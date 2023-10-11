@@ -15,6 +15,7 @@ export async function request(url: string, { method, body, withCredentials }: Re
   console.log(BASE_URL)
   try {
     url = `${BASE_URL}/api/v1${url}`
+    console.log(url)
     const options: RequestInit = { method, headers: { "Content-Type": "application/json" } }
 
     if (method.toLowerCase() != "get")
