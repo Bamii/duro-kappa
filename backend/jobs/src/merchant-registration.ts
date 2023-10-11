@@ -33,6 +33,7 @@ async function run() {
         // generate qr.
         await qrcode.toFile(filename, merchant_url);
         const url: string = await storage.upload(filename, readFileSync(filename))
+        console.log("uploaded file")
         log.info(`uploaded file ${url}.`)
         rmSync(filename);
 
