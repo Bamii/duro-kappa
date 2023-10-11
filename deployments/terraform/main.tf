@@ -29,34 +29,49 @@ resource "docker_network" "link" {
   driver = "bridge"
 }
 
+data "docker_registry_image" "door" {
+  name = "bbamii/duro-door:latest"
+}
+
 resource "docker_image" "door" {
-  name         = "bbamii/duro-door:latest"
-  keep_locally = true
+  name          = data.docker_registry_image.door.name
+  pull_triggers = [data.docker_registry_image.door.sha256_digest]
+}
+
+data "docker_registry_image" "doorman" {
+  name = "bbamii/duro-doorman:latest"
 }
 
 resource "docker_image" "doorman" {
-  name         = "bbamii/duro-doorman:latest"
-  keep_locally = true
+  name          = data.docker_registry_image.doorman.name
+  pull_triggers = [data.docker_registry_image.doorman.sha256_digest]
+}
+
+
+data "docker_registry_image" "frontend" {
+  name = "bbamii/duro-butler:latest"
 }
 
 resource "docker_image" "frontend" {
-  name         = "bbamii/duro-butler:latest"
-  keep_locally = true
+  name          = data.docker_registry_image.frontend.name
+  pull_triggers = [data.docker_registry_image.frontend.sha256_digest]
+}
+
+data "docker_registry_image" "jobs" {
+  name = "bbamii/duro-tray:latest"
 }
 
 resource "docker_image" "jobs" {
-  name         = "bbamii/duro-tray:latest"
-  keep_locally = true
+  name          = data.docker_registry_image.jobs.name
+  pull_triggers = [data.docker_registry_image.jobs.sha256_digest]
 }
 
 resource "docker_image" "queue" {
   name         = "redis:latest"
-  keep_locally = true
 }
 
 resource "docker_image" "db" {
   name         = "postgres:latest"
-  keep_locally = true
 }
 
 
