@@ -12,6 +12,7 @@ export const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:300
 
 export async function request(url: string, { method, body, withCredentials }: RequestOptions) {
   const storage = new Storage();
+  console.log(BASE_URL)
   try {
     url = `${BASE_URL}/api/v1${url}`
     const options: RequestInit = { method, headers: { "Content-Type": "application/json" } }
