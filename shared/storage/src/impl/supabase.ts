@@ -17,6 +17,7 @@ export default class Supabase implements Storage {
   connect(): this {
     try {
       this.client = createClient(config.connection_url, config.private_key);
+      log.info("connected to client")
       return this;
     } catch (error: any) {
       log.error('could not connect to client', error);
@@ -31,6 +32,7 @@ export default class Supabase implements Storage {
   // this function will replace the old file with the latest one provided the file 
   // has been uploaded already
   async upload<T>(file: string, object: T): Promise<string> {
+    log.info(`uploading file: ${file}`)
     log.info(file, object);
     const { error } = await this.client
       .storage
