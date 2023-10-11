@@ -31,11 +31,10 @@ async function run() {
         const filename = `${branch.id}__${new_queue.id}`;
 
         // generate qr.
-        // const _stream = createWriteStream(filename)
         await qrcode.toFile(filename, merchant_url);
         const url: string = await storage.upload(filename, readFileSync(filename))
+        log.info(`uploaded file ${url}.`)
         rmSync(filename);
-        //const url = `${merchant_url}/${filename}`
 
         // update the merchant's qr_code url.
         await database.updateQueueById(Number.parseInt(id), { ...new_queue, qr_code: url });
