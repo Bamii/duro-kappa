@@ -33,6 +33,7 @@ export default class Supabase implements Storage {
   // has been uploaded already
   async upload<T>(file: string, object: T): Promise<string> {
     log.info(`uploading file: ${file}`)
+    console.log(`uploading file: ${file}`)
     log.info(file, object);
     const { error } = await this.client
       .storage
@@ -44,6 +45,7 @@ export default class Supabase implements Storage {
       });
     if (error) {
       log.error(error);
+      console.log(error)
       throw new ApplicationError("An error occured while uploading the object.")
     }
     log.info("successfully uploaded file ", file);
