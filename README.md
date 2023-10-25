@@ -1,6 +1,7 @@
 # DURO by team kappa
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/57e3873561594453a85d0a2a015949e4)](https://app.codacy.com/gh/PipelineV2/duro-kappa/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBamii%2Fduro-kappa.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FBamii%2Fduro-kappa?ref=badge_shield)
 
 ## description
 It is time to move away from people self-organising (by writing names on paper and assigning numbers to themselves) or randomly storming an office, hoping to be attended to.
@@ -45,3 +46,7 @@ The QR code and mobile phone number are displayed visibly and outside the premis
 
 ## architecture.
 ![Untitled-2023-06-26-2309](https://github.com/Bamii/duro-kappa/assets/16966438/b03a81ca-02c7-42a1-ba8a-9923729f5cef)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBamii%2Fduro-kappa.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBamii%2Fduro-kappa?ref=badge_large)
