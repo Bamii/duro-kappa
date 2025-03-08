@@ -2,7 +2,7 @@
   "name": "duro-queue",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "types": "src/index.ts",
   "scripts": {
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
@@ -22,6 +22,7 @@
     "logger": "workspace:*",
     "moment": "^2.29.4",
     "notifications": "workspace:*",
+    "pub-sub": "workspace:*",
     "queue": "workspace:*",
     "typedi": "^0.10.0",
     "zod": "^3.21.4"

@@ -4,7 +4,7 @@ import PubSubService from "pub-sub";
 import DatabaseInstance from 'database';
 import NotificationService, { MERCHANT_REGISTRATION_NOTIFICATION } from "notifications";
 import { Queue } from "database/src/models";
-import qrcode = require("qrcode");
+import qrcode from "qrcode";
 import { readFileSync, rmSync } from "node:fs";
 import { Container } from "typedi";
 import log from "logger";

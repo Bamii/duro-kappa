@@ -8,6 +8,7 @@ const pubsub = Container.get(PubSubService);
 const notifications = notificationService();
 
 async function run() {
+  console.log("starting notifications")
   try {
     const channels = {
       email: await notifications.getInstanceOfNotificationType("email").connect(),

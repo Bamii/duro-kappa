@@ -2,7 +2,7 @@
   "name": "doorman",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "scripts": {
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "build": "tsc --incremental",
@@ -14,10 +14,17 @@
   "license": "ISC",
   "dependencies": {
     "admin": "workspace:*",
+    "dotenv": "^16.0.3",
     "duro-queue": "workspace:*",
     "express": "^4.18.2",
+    "express-http-proxy": "^2.1.1",
     "expressapp": "workspace:*",
-    "newrelic": "^11.0.0"
+    "frontend": "workspace:*",
+    "h3": "^1.12.0",
+    "newrelic": "^11.0.0",
+    "nuxt": "^3.12.4",
+    "vue": "^3.4.38",
+    "vue-server-renderer": "^2.7.16"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",

@@ -21,13 +21,17 @@ router.post('/onboard', validator.createMerchantValidation, async (_req, res, ne
     const { company_name } = _req.body as Input<Merchant>;
     const { location, coordinates } = _req.body as Input<Branch>;
     const { username, email, password } = _req.body as Input<Admin>;
-
     let merchant, admin;
+
+    merchant = await database.insertMerchant({ company_name: company_name.toLowerCase() })
     admin = await database.getAdminByEmail(email);
     if (admin)
       throw new ApplicationError("this email is already associated with a merchant.")
 
-    merchant = await database.insertMerchant({ company_name: company_name.toLowerCase() })
+    admin = await database.getAdminBy("username", username!)
+    if (admin)
+      throw new ApplicationError("this username is already associated with a merchant.")
+
     const branch = await database.insertBranch({
       merchantId: merchant.id,
       location,
@@ -38,7 +42,9 @@ router.post('/onboard', validator.createMerchantValidation, async (_req, res, ne
     admin = await database.insertAdmin({
       merchantId: merchant.id,
       branchId: branch.id,
-      username, email, password: hashedPassword, superAdmin: true
+      username, email, 
+      password: hashedPassword, 
+      superAdmin: true
     })
 
     const company_queue = await database.insertQueue({
@@ -56,13 +62,14 @@ router.post('/onboard', validator.createMerchantValidation, async (_req, res, ne
 
     log.info("successfully added business to list. :", merchant.id)
     const clean_user = extract(admin, 'password');
+    const token = signJWT({ email });
+    res.cookie("token", token, { httpOnly: true, maxAge: 900000 })
 
     return sendSuccess(
       res,
       "Successfully registered your business. You will get an email with details about your qr code. Thank you for using our service!",
-      { data: { user: clean_user, token: signJWT({ email }) } }
+      { data: { user: clean_user, token } }
     )
-
   } catch (error) {
     return next(error)
   }
@@ -81,16 +88,22 @@ router.post('/login', validator.loginValidator, async (req, res, next) => {
       throw new ApplicationError("oops! invalid email and password combination.")
 
     const new_user = extract(user, 'password');
+    const token = signJWT({ email });
+    res.cookie("token", token)
+    res.cookie('user', '', { maxAge: -1 })
+    res.cookie("admin", JSON.stringify(new_user))
+
     return sendSuccess(
       res,
       "Logged in successfully!",
-      { data: { token: signJWT({ email }), user: new_user } }
+      { data: { token, user: new_user } }
     )
   } catch (error) {
     return next(error);
   }
 })
 
+// queue actions
 router.post('/queue/user/dismiss', validator.dismissUserValidation, adminAuth(false), async (req: any & { user: Admin }, res: any, next: any) => {
   try {
     const { userId } = req.body;
@@ -127,7 +140,6 @@ router.post('/queue/user/dismiss', validator.dismissUserValidation, adminAuth(fa
   }
 })
 
-// queue actions
 router.post('/queue/advance', validator.advanceQueueValidation, adminAuth(false), async (req: any & { user: Admin }, res: Response, next: NextFunction) => {
   try {
     const { userId: previousAttendedTo, queueId } = req.body;
@@ -163,10 +175,11 @@ router.post('/queue/advance', validator.advanceQueueValidation, adminAuth(false)
     log.info(userToAttendTo ? `this is user to attend: ${userToAttendTo}` : 'there are no users to attend to. relax, & chop life.')
     if (!userToAttendTo)
       return sendSuccess(res, "There is nobody currently on the queue.");
+
     const { email } = await database.updateUserById(
       Number.parseInt(userToAttendTo),
       { attending_to: true, current_queue: queueId }
-    )
+    );
 
     // notify the user.
     await queue.enqueue(
@@ -218,7 +231,7 @@ router.post('/queue/extend', validator.advanceQueueValidation, adminAuth(true), 
       return sendError(res, "closed sesame.", { status: 401 })
     }
 
-    await cache.insert(QUEUE_DURATION_CACHE, { key: queueId, value: time });
+    cache.insert(QUEUE_DURATION_CACHE, { key: queueId, value: time });
     return sendSuccess(res, "Successfully extended queue time.")
   } catch (error) {
     return next(error)
@@ -282,6 +295,10 @@ router.get('/branch/list', adminAuth(true), async (req: any & { user: Admin }, r
   }
 });
 
+// @ts-ignore
+router.post('/administrator/create', adminAuth(true), async (req: any & { user: Admin }, res: any) => {
+
+})
 
 // queues
 router.post('/queue/create', adminAuth(false), async (req: any & { user: Admin }, res: any, next: NextFunction) => {
@@ -334,11 +351,13 @@ router.delete('/queue/delete', validator.queueActionValidation, adminAuth(false)
 });
 
 router.get('/queue/list', adminAuth(false), async (req: any & { user: Admin }, res: any, next: NextFunction) => {
+  console.log('asdfa')
   try {
     const { branchId } = req.user;
     const list = await database.getBranchQueues(branchId);
     return sendSuccess(res, "Successfully retrieved list of queues.", { data: list })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 });
