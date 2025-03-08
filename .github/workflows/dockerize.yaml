@@ -80,11 +80,11 @@ jobs:
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-rlgoDzvc -i"
-          SOURCE: "deployments/terraform/"
+          SOURCE: "deployments/docker-compose/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
-          SCRIPT_BEFORE: | 
+          SCRIPT_BEFORE: |
             ls -al
           SCRIPT_AFTER: |
             cd ${{ secrets.REMOTE_TARGET }}
@@ -100,9 +100,9 @@ jobs:
             NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             REMOTE_TARGET=${{ secrets.REMOTE_TARGET }}
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}" > .env-docker
 
             pwd
-            ./deploy.sh
+            docker compose up -d
 
 
