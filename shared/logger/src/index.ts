@@ -23,7 +23,7 @@ const transports = [
 
 const level = () => {
   const isDevelopment = config.environment === 'development'
-  return isDevelopment ? 'debug' : 'warn'
+  return isDevelopment ? 'debug' : 'info'
 }
 
 const levels = {

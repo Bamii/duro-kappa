@@ -142,7 +142,7 @@ export class Prisma extends Database {
     }
   }
 
-  async getUsers(options: Input<User>): Promise<User[]> {
+  async getUsers(options: Input<Partial<User>>): Promise<User[]> {
     try {
       return this.client.user.findMany({ where: { ...options } })
     } catch (error: any) {
@@ -201,6 +201,18 @@ export class Prisma extends Database {
     } catch (error: any) {
       console.log(error.message)
       throw new Error(`admin record could not be inserted : ${error.message}`)
+    }
+  }
+
+  async getAdminBy(key: "id" | "email" | "username", value: string): Promise<Admin> {
+    try {
+      return this.client.admin.findUnique({
+        where: { [key]: value },
+        include: { branch: true, merchant: true }
+      })
+    } catch (error: any) {
+      log.error('Could not get user by email or phone')
+      throw new Error(error.message);
     }
   }
 

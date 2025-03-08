@@ -1,5 +1,5 @@
 import { Queue, QueueType } from '../index'
-import { AMQPChannel, AMQPClient } from '@cloudamqp/amqp-client'
+// import { AMQPChannel, AMQPClient } from '@cloudamqp/amqp-client'
 import { Service } from "typedi";
 import log from "logger";
 
@@ -8,12 +8,13 @@ export default class RabbitMq implements Queue {
   client: any;
 
   async connect(): Promise<this> {
+    const { AMQPClient } = await import('@cloudamqp/amqp-client')
     this.client = await new AMQPClient("amqp://localhost").connect();
     return this;
   }
 
   // returns the number of messages in a queue.
-  async declareQueue(channel: AMQPChannel, id: QueueType): Promise<{ messages: number }> {
+  async declareQueue(channel: any, id: QueueType): Promise<{ messages: number }> {
     try {
       await this.client.exchangeDeclare(id, 'topic');
       const q = await channel.queueDeclare(id);
@@ -26,7 +27,7 @@ export default class RabbitMq implements Queue {
     }
   }
 
-  async ensureQueue(channel: AMQPChannel, id: QueueType): Promise<boolean> {
+  async ensureQueue(channel: any, id: QueueType): Promise<boolean> {
     try {
       await this.declareQueue(channel, id)
       return true;

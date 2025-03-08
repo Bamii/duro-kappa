@@ -15,17 +15,19 @@ export default class Redis implements PubSub {
     this.queue.enqueue(topic, { topic: "", value: "" })
   }
 
-  async subscribe(topic: string, callback: Function | Awaited<Function>): Promise<void> {
-    this.consume(topic, callback);
+  async subscribe(topic: string, options: { topic: string }, callback: Function | Awaited<Function>): Promise<void> {
+    this.consume(topic, options, callback);
   }
   
-  async consume(topic: string, callback: Function | Awaited<Function>): Promise<void> {
+  async consume(topic: string, options: { topic: string }, callback: Function | Awaited<Function>): Promise<void> {
     this.consuming = true;
     while (this.consuming) {
       try {
-        // log.info('starting dequeue.')
-        let res = await this.queue.dequeue(topic, { topic: "" });
-        //log.info(res);
+        log.info('starting dequeue.')
+        // let res = await this.queue.dequeue(topic, options);
+        let res = await this.queue.getQueue(topic, options);
+        log.info(res);
+
         if (res)
           await callback(res);
       } catch (error: any) {

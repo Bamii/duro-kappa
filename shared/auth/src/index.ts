@@ -40,6 +40,9 @@ export const clientAuth = () => {
 export const adminAuth = (isSuperAdmin: boolean) => {
   return async (req: any & Admin, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
+    console.log(Object.keys(req.cookies))
+
+      console.log("something in auth")
     try {
       if (!authorization) throw new ApplicationError("close sesame");
 
@@ -58,6 +61,7 @@ export const adminAuth = (isSuperAdmin: boolean) => {
       req.user = user;
       return next();
     } catch (error: any) {
+      // console.log(error)
       if (error instanceof ApplicationError)
         return sendError(res, error.message, { status: 401 });
 
@@ -68,6 +72,10 @@ export const adminAuth = (isSuperAdmin: boolean) => {
 
 export const signJWT = <T extends string | Record<string, string>>(value: T) => {
   return jwt.sign(value, TOKEN_SECRET_KEY);
+}
+
+export const verifyJWT = (token: string) => {
+  return jwt.verify(token, TOKEN_SECRET_KEY)
 }
 
 export const hashPassword = async (password: string): Promise<string> => {

@@ -33,9 +33,11 @@ model Branch {
 
 model User {
   id            Int     @id @default(autoincrement())
-  name          String?
-  email         String? @unique
+  name          String? @default("")
+  username      String? @default("")
+  email         String  @unique
   phone         String? @unique
+  password      String  @default("")
   in_queue      Boolean @default(false)
   current_queue Int?    
   queue         Queue?  @relation(fields: [current_queue], references: [id])

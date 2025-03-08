@@ -1,3 +1,4 @@
+// import { type User } from "@prisma/client";
 export abstract class Repository<T> {
   abstract get(): T
   abstract getById(): T
@@ -31,7 +32,7 @@ export abstract class Database {
   abstract updateBusinessBranchById(id: string, merchant: Partial<Branch>): Promise<Branch>
 
   // user
-  abstract getUsers(options: Input<User>): Promise<User[]>
+  abstract getUsers(options: Input<Partial<User>>): Promise<User[]>
 
   abstract insertUser(merchant: Input<User>): Promise<User>
 
@@ -49,6 +50,8 @@ export abstract class Database {
   abstract getAdminById(id: string): Promise<Admin>
 
   abstract getAdminByEmail(email: string): Promise<Admin>
+
+  abstract getAdminBy(key: "id" | "username" | "email", value: string): Promise<Admin>
 
   abstract updateAdminById(id: string, user: Update<Admin>): Promise<Admin>
 
@@ -95,7 +98,9 @@ export type User = {
   id: number
   name?: string
   email?: string
+  username: string
   phone?: string
+  password: string
   in_queue: boolean
   current_queue?: number | null
   attending_to?: boolean

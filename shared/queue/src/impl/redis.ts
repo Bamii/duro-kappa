@@ -15,6 +15,8 @@ export default class Redis implements Queue {
   }
 
   async connect(): Promise<this> {
+    this.client = null
+    // return this;
     return new Promise((resolve, reject) => {
       try {
         this.client = new RedisClient(config.connection_url);
@@ -86,10 +88,10 @@ export default class Redis implements Queue {
     }
   }
 
-  async getQueue(queue: QueueType | string, options: { topic: string }): Promise<any[]> {
+  async getQueue(queue: QueueType | string, options: { topic: string, length?: number }): Promise<any[]> {
     try {
       const queueName = `${queue}:${options.topic ?? ""}`;
-      const length = await this.length(queue, { topic: options.topic })
+      const length = options.length ?? await this.length(queue, { topic: options.topic })
       const list = await this.client?.xread(
         "COUNT", length,
         "BLOCK", 5000,
