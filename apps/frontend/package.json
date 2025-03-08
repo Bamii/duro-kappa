@@ -1,0 +1,27 @@
+{
+  "name": "frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/ui": "^2.17.0",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@pinia/nuxt": "^0.5.3",
+    "@vueuse/nuxt": "^11.0.0",
+    "nuxt": "^3.12.4"
+  },
+  "dependencies": {
+    "autoprefixer": "10.4.14",
+    "pinia": "^2.2.2",
+    "postcss": "8.4.23",
+    "use-local-storage": "^3.0.0",
+    "yup": "^1.1.1"
+  }
+}
